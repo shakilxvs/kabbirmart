@@ -6,7 +6,7 @@ import ProductDetailClient from "@/components/ProductDetailClient";
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeading from "@/components/SectionHeading";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const product = await getProductBySlug(params.slug);
