@@ -4,7 +4,7 @@ import { CATEGORIES } from "@/lib/data";
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeading from "@/components/SectionHeading";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const category = CATEGORIES.find((c) => c.id === params.id);
