@@ -115,17 +115,17 @@ export default function AdminDashboardPage() {
             <Link
               key={o.id}
               href={`/admin/orders/${o.id}`}
-              className={`flex items-center justify-between px-4 py-3.5 text-[13px] ${
+              className={`flex flex-col gap-2 px-4 py-3.5 text-[13px] sm:flex-row sm:items-center sm:justify-between ${
                 i !== 0 ? "border-t border-line" : ""
               }`}
             >
-              <div>
-                <p className="font-medium text-ink">{o.orderNumber}</p>
-                <p className="text-ink-soft">{o.customer?.name}</p>
+              <div className="min-w-0">
+                <p className="truncate font-medium text-ink">{o.orderNumber}</p>
+                <p className="truncate text-ink-soft">{o.customer?.name}</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex shrink-0 items-center gap-3">
                 <span className="text-ink">{formatBDT(o.total)}</span>
-                <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${STATUS_STYLES[o.status]}`}>
+                <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${STATUS_STYLES[o.status] || "bg-line text-ink-soft"}`}>
                   {o.status}
                 </span>
               </div>
