@@ -3,17 +3,18 @@ import Link from "next/link";
 import { ArrowRight, Truck, PackageCheck, BadgeCheck } from "lucide-react";
 import { getFeaturedProducts, getTrendingProducts } from "@/lib/products";
 import { getHomepageContent } from "@/lib/settings";
-import { CATEGORIES } from "@/lib/data";
+import { getAllCategories } from "@/lib/categories";
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeading from "@/components/SectionHeading";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [content, featured, trending] = await Promise.all([
+  const [content, featured, trending, categories] = await Promise.all([
     getHomepageContent(),
     getFeaturedProducts(),
     getTrendingProducts(),
+    getAllCategories(),
   ]);
 
   return (
@@ -54,17 +55,23 @@ export default async function HomePage() {
       {/* Categories */}
       <section className="container-page mt-16 sm:mt-24">
         <SectionHeading title="Shop by category" />
-        <div className="-mx-5 flex gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:gap-4 sm:overflow-visible sm:px-0 lg:grid-cols-8">
-          {CATEGORIES.map((c) => (
-            <Link
-              key={c.id}
-              href={`/category/${c.id}`}
-              className="flex shrink-0 items-center justify-center rounded-2xl border border-line bg-surface px-5 py-4 text-[13px] font-medium text-ink transition-colors hover:border-moss hover:text-moss sm:px-3 sm:text-center"
-            >
-              {c.label}
-            </Link>
-          ))}
-        </div>
+        {categories.length > 0 ? (
+          <div className="-mx-5 flex gap-3 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:grid-cols-4 sm:gap-4 sm:overflow-visible sm:px-0 lg:grid-cols-8">
+            {categories.map((c) => (
+              <Link
+                key={c.id}
+                href={`/category/${c.slug}`}
+                className="flex shrink-0 items-center justify-center rounded-2xl border border-line bg-surface px-5 py-4 text-[13px] font-medium text-ink transition-colors hover:border-moss hover:text-moss sm:px-3 sm:text-center"
+              >
+                {c.label}
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <p className="text-[13px] text-ink-soft">
+            No categories yet — add some from the admin panel.
+          </p>
+        )}
       </section>
 
       {/* Featured */}
