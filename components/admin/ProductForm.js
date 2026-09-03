@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createProduct, updateProduct } from "@/lib/products";
-import { CATEGORIES } from "@/lib/data";
+import { getAllCategories } from "@/lib/categories";
 import { slugify } from "@/lib/utils";
 
 const EMPTY = {
@@ -13,7 +13,7 @@ const EMPTY = {
   description: "",
   images: "",
   stock: "",
-  category: CATEGORIES[0].id,
+  category: "",
   featured: false,
   trending: false,
   available: true,
@@ -21,6 +21,7 @@ const EMPTY = {
 
 export default function ProductForm({ initial, productId }) {
   const router = useRouter();
+  const [categories, setCategories] = useState([]);
   const [form, setForm] = useState(() =>
     initial
       ? {
@@ -35,6 +36,13 @@ export default function ProductForm({ initial, productId }) {
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    getAllCategories().then((cats) => {
+      setCategories(cats);
+      setForm((f) => (f.category ? f : { ...f, category: cats[0]?.slug || "" }));
+    });
+  }, []);
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -155,8 +163,9 @@ export default function ProductForm({ initial, productId }) {
             value={form.category}
             onChange={(e) => update("category", e.target.value)}
           >
-            {CATEGORIES.map((c) => (
-              <option key={c.id} value={c.id}>{c.label}</option>
+            {categories.length === 0 && <option value="">No categories yet</option>}
+            {categories.map((c) => (
+              <option key={c.id} value={c.slug}>{c.label}</option>
             ))}
           </select>
         </div>
