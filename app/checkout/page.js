@@ -13,6 +13,10 @@ import {
   ShieldCheck,
   Banknote,
   CheckCircle2,
+  MapPin,
+  User,
+  Phone,
+  ClipboardList,
 } from "lucide-react";
 
 export default function CheckoutPage() {
@@ -125,281 +129,389 @@ export default function CheckoutPage() {
   return (
     <div className="container-page py-6 sm:py-10">
 
-      {/* Header */}
+      {/* ================= HEADER ================= */}
       <div className="mx-auto max-w-2xl text-center">
 
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-moss-light">
-          <CheckCircle2 size={25} className="text-moss-dark" />
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 shadow-sm">
+          <CheckCircle2
+            size={28}
+            strokeWidth={2.5}
+            className="text-emerald-700"
+          />
         </div>
 
-        <h1 className="font-display text-[28px] font-medium tracking-tight text-ink sm:text-[34px]">
+        <h1 className="font-display text-[30px] font-bold tracking-tight text-ink sm:text-[36px]">
           অর্ডার কনফার্ম করুন
         </h1>
 
-        <p className="mt-2 text-[13px] leading-6 text-ink-soft">
-          আপনার তথ্য দিয়ে অর্ডারটি সম্পন্ন করুন। সময় লাগবে মাত্র ১ মিনিট।
+        <p className="mt-2 text-[14px] font-medium leading-6 text-ink-soft sm:text-[15px]">
+          আপনার তথ্য দিয়ে অর্ডারটি সম্পন্ন করুন
         </p>
 
       </div>
 
-      {/* Trust Section */}
-      <div className="mx-auto mt-6 grid max-w-4xl grid-cols-3 gap-2 rounded-2xl border border-line bg-surface p-3">
+      {/* ================= TRUST SECTION ================= */}
+      <div className="mx-auto mt-7 grid max-w-4xl grid-cols-3 gap-2">
 
-        <div className="flex flex-col items-center gap-1 text-center">
-          <Truck size={19} className="text-ink" />
+        {/* Delivery */}
+        <div className="rounded-2xl border border-sky-200 bg-sky-50 px-2 py-4 text-center shadow-sm">
 
-          <span className="text-[10px] font-medium text-ink sm:text-[12px]">
+          <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-sky-100">
+            <Truck
+              size={19}
+              strokeWidth={2.5}
+              className="text-sky-700"
+            />
+          </div>
+
+          <p className="text-[11px] font-bold text-sky-900 sm:text-[13px]">
             সারা বাংলাদেশে
-          </span>
+          </p>
 
-          <span className="text-[9px] text-ink-soft sm:text-[11px]">
+          <p className="mt-0.5 text-[10px] font-medium text-sky-700 sm:text-[11px]">
             হোম ডেলিভারি
-          </span>
+          </p>
+
         </div>
 
-        <div className="flex flex-col items-center gap-1 border-x border-line text-center">
-          <Banknote size={19} className="text-ink" />
+        {/* COD */}
+        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-2 py-4 text-center shadow-sm">
 
-          <span className="text-[10px] font-medium text-ink sm:text-[12px]">
+          <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-amber-100">
+            <Banknote
+              size={19}
+              strokeWidth={2.5}
+              className="text-amber-700"
+            />
+          </div>
+
+          <p className="text-[11px] font-bold text-amber-900 sm:text-[13px]">
             ক্যাশ অন ডেলিভারি
-          </span>
+          </p>
 
-          <span className="text-[9px] text-ink-soft sm:text-[11px]">
+          <p className="mt-0.5 text-[10px] font-medium text-amber-700 sm:text-[11px]">
             হাতে পেয়ে পেমেন্ট
-          </span>
+          </p>
+
         </div>
 
-        <div className="flex flex-col items-center gap-1 text-center">
-          <ShieldCheck size={19} className="text-ink" />
+        {/* Security */}
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-2 py-4 text-center shadow-sm">
 
-          <span className="text-[10px] font-medium text-ink sm:text-[12px]">
+          <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100">
+            <ShieldCheck
+              size={19}
+              strokeWidth={2.5}
+              className="text-emerald-700"
+            />
+          </div>
+
+          <p className="text-[11px] font-bold text-emerald-900 sm:text-[13px]">
             নিরাপদ অর্ডার
-          </span>
+          </p>
 
-          <span className="text-[9px] text-ink-soft sm:text-[11px]">
+          <p className="mt-0.5 text-[10px] font-medium text-emerald-700 sm:text-[11px]">
             সহজ ও ঝামেলামুক্ত
-          </span>
+          </p>
+
         </div>
 
       </div>
 
-      {/* Main */}
+      {/* ================= MAIN ================= */}
       <div className="mx-auto mt-7 max-w-5xl">
 
         <form onSubmit={handleSubmit}>
 
-          {/* Delivery Information */}
-          <div className="rounded-2xl border border-line bg-surface p-5 sm:p-7">
+          {/* ================= DELIVERY INFORMATION ================= */}
+          <div className="overflow-hidden rounded-3xl border border-violet-200 bg-violet-50 shadow-sm">
 
-            <div className="mb-6">
+            {/* Section Header */}
+            <div className="border-b border-violet-200 bg-violet-100/70 px-5 py-5 sm:px-7">
 
-              <h2 className="text-[17px] font-semibold text-ink">
-                ডেলিভারি তথ্য
-              </h2>
+              <div className="flex items-center gap-3">
 
-              <p className="mt-1 text-[12px] text-ink-soft">
-                সঠিক তথ্য দিন যাতে আপনার পণ্যটি সঠিক ঠিকানায় পৌঁছে দিতে পারি।
-              </p>
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
+                  <MapPin
+                    size={21}
+                    strokeWidth={2.5}
+                    className="text-violet-700"
+                  />
+                </div>
 
-            </div>
+                <div>
 
-            {/* Name */}
-            <div className="mb-5">
+                  <h2 className="text-[18px] font-bold text-violet-950 sm:text-[20px]">
+                    ডেলিভারি তথ্য
+                  </h2>
 
-              <label className="label-field" htmlFor="name">
-                আপনার নাম *
-              </label>
+                  <p className="mt-0.5 text-[12px] font-medium text-violet-700 sm:text-[13px]">
+                    আপনার সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন
+                  </p>
 
-              <input
-                id="name"
-                className="input-field"
-                value={form.name}
-                onChange={(e) => update("name", e.target.value)}
-                placeholder="আপনার পূর্ণ নাম লিখুন"
-                autoComplete="name"
-                required
-              />
+                </div>
+
+              </div>
 
             </div>
 
-            {/* Phone */}
-            <div className="mb-5">
+            <div className="p-5 sm:p-7">
 
-              <label className="label-field" htmlFor="phone">
-                মোবাইল নম্বর *
-              </label>
+              {/* Name */}
+              <div className="mb-5">
 
-              <input
-                id="phone"
-                className="input-field"
-                value={form.phone}
-                onChange={(e) => update("phone", e.target.value)}
-                placeholder="01XXXXXXXXX"
-                inputMode="numeric"
-                autoComplete="tel"
-                required
-              />
+                <label
+                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
+                  htmlFor="name"
+                >
+                  আপনার নাম *
+                </label>
 
-              <p className="mt-1.5 text-[11px] text-ink-soft">
-                📞 অর্ডার কনফার্ম করার জন্য এই নম্বরে যোগাযোগ করা হবে।
-              </p>
+                <div className="relative">
 
-            </div>
+                  <User
+                    size={18}
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-soft"
+                  />
 
-            {/* District */}
-            <div className="mb-5">
+                  <input
+                    id="name"
+                    className="input-field pl-11 text-[14px] font-medium sm:text-[15px]"
+                    value={form.name}
+                    onChange={(e) => update("name", e.target.value)}
+                    placeholder="আপনার পূর্ণ নাম লিখুন"
+                    autoComplete="name"
+                    required
+                  />
 
-              <label className="label-field" htmlFor="district">
-                জেলা *
-              </label>
+                </div>
 
-              <select
-                id="district"
-                className="input-field"
-                value={form.district}
-                onChange={(e) => update("district", e.target.value)}
-                required
-              >
+              </div>
 
-                <option value="">
-                  জেলা নির্বাচন করুন
-                </option>
+              {/* Phone */}
+              <div className="mb-5">
 
-                {districts.map((district) => (
-                  <option key={district} value={district}>
-                    {district}
+                <label
+                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
+                  htmlFor="phone"
+                >
+                  মোবাইল নম্বর *
+                </label>
+
+                <div className="relative">
+
+                  <Phone
+                    size={18}
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-soft"
+                  />
+
+                  <input
+                    id="phone"
+                    className="input-field pl-11 text-[14px] font-medium sm:text-[15px]"
+                    value={form.phone}
+                    onChange={(e) => update("phone", e.target.value)}
+                    placeholder="01XXXXXXXXX"
+                    inputMode="numeric"
+                    autoComplete="tel"
+                    required
+                  />
+
+                </div>
+
+                <p className="mt-2 text-[11px] font-medium text-ink-soft sm:text-[12px]">
+                  📞 অর্ডার কনফার্ম করার জন্য এই নম্বরে যোগাযোগ করা হবে।
+                </p>
+
+              </div>
+
+              {/* District */}
+              <div className="mb-5">
+
+                <label
+                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
+                  htmlFor="district"
+                >
+                  জেলা *
+                </label>
+
+                <select
+                  id="district"
+                  className="input-field text-[14px] font-semibold sm:text-[15px]"
+                  value={form.district}
+                  onChange={(e) => update("district", e.target.value)}
+                  required
+                >
+
+                  <option value="">
+                    জেলা নির্বাচন করুন
                   </option>
-                ))}
 
-              </select>
+                  {districts.map((district) => (
+                    <option key={district} value={district}>
+                      {district}
+                    </option>
+                  ))}
 
-            </div>
+                </select>
 
-            {/* Upazila / Thana */}
-            <div className="mb-5">
+              </div>
 
-              <label className="label-field" htmlFor="upazila">
-                থানা / উপজেলা *
-              </label>
+              {/* Upazila */}
+              <div className="mb-5">
 
-              <select
-                id="upazila"
-                className="input-field"
-                value={form.upazila}
-                onChange={(e) => update("upazila", e.target.value)}
-                required
-                disabled={!form.district}
-              >
+                <label
+                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
+                  htmlFor="upazila"
+                >
+                  থানা / উপজেলা *
+                </label>
 
-                <option value="">
-                  {form.district
-                    ? "থানা / উপজেলা নির্বাচন করুন"
-                    : "প্রথমে জেলা নির্বাচন করুন"}
-                </option>
+                <select
+                  id="upazila"
+                  className="input-field text-[14px] font-semibold sm:text-[15px]"
+                  value={form.upazila}
+                  onChange={(e) => update("upazila", e.target.value)}
+                  required
+                  disabled={!form.district}
+                >
 
-                {upazilas.map((upazila) => (
-                  <option key={upazila} value={upazila}>
-                    {upazila}
+                  <option value="">
+                    {form.district
+                      ? "থানা / উপজেলা নির্বাচন করুন"
+                      : "প্রথমে জেলা নির্বাচন করুন"}
                   </option>
-                ))}
 
-              </select>
+                  {upazilas.map((upazila) => (
+                    <option key={upazila} value={upazila}>
+                      {upazila}
+                    </option>
+                  ))}
 
-            </div>
+                </select>
 
-            {/* Full Address */}
-            <div className="mb-5">
+              </div>
 
-              <label className="label-field" htmlFor="address">
-                সম্পূর্ণ ঠিকানা *
-              </label>
+              {/* Full Address */}
+              <div className="mb-5">
 
-              <textarea
-                id="address"
-                className="input-field min-h-[110px] resize-none"
-                value={form.address}
-                onChange={(e) => update("address", e.target.value)}
-                placeholder="বাসা/বাড়ি, রোড, গ্রাম/মহল্লা, ইউনিয়ন, ওয়ার্ড ইত্যাদিসহ সম্পূর্ণ ঠিকানা লিখুন"
-                autoComplete="street-address"
-                required
-              />
+                <label
+                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
+                  htmlFor="address"
+                >
+                  সম্পূর্ণ ঠিকানা *
+                </label>
 
-              <p className="mt-1.5 text-[11px] text-ink-soft">
-                📍 বিস্তারিত ঠিকানা দিলে দ্রুত ও সঠিকভাবে ডেলিভারি দেওয়া সম্ভব হবে।
-              </p>
+                <textarea
+                  id="address"
+                  className="input-field min-h-[115px] resize-none text-[14px] font-medium leading-6 sm:text-[15px]"
+                  value={form.address}
+                  onChange={(e) => update("address", e.target.value)}
+                  placeholder="বাসা/বাড়ি, রোড, গ্রাম/মহল্লা, ইউনিয়ন, ওয়ার্ড ইত্যাদিসহ সম্পূর্ণ ঠিকানা লিখুন"
+                  autoComplete="street-address"
+                  required
+                />
 
-            </div>
+                <p className="mt-2 text-[11px] font-medium text-ink-soft sm:text-[12px]">
+                  📍 বিস্তারিত ঠিকানা দিলে দ্রুত ও সঠিকভাবে ডেলিভারি দেওয়া সম্ভব হবে।
+                </p>
 
-            {/* Note */}
-            <div>
+              </div>
 
-              <label className="label-field" htmlFor="note">
-                অতিরিক্ত নির্দেশনা
-              </label>
+              {/* Note */}
+              <div>
 
-              <textarea
-                id="note"
-                className="input-field min-h-[70px] resize-none"
-                value={form.note}
-                onChange={(e) => update("note", e.target.value)}
-                placeholder="ডেলিভারি সংক্রান্ত কোনো নির্দেশনা থাকলে লিখুন (ঐচ্ছিক)"
-              />
+                <label
+                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
+                  htmlFor="note"
+                >
+                  অতিরিক্ত নির্দেশনা
+                </label>
+
+                <textarea
+                  id="note"
+                  className="input-field min-h-[80px] resize-none text-[14px] font-medium leading-6 sm:text-[15px]"
+                  value={form.note}
+                  onChange={(e) => update("note", e.target.value)}
+                  placeholder="ডেলিভারি সংক্রান্ত কোনো নির্দেশনা থাকলে লিখুন (ঐচ্ছিক)"
+                />
+
+              </div>
 
             </div>
 
           </div>
 
-          {/* Order Box */}
-          <div className="mt-6 overflow-hidden rounded-2xl border border-line bg-surface">
+          {/* ================= ORDER SUMMARY ================= */}
+          <div className="mt-6 overflow-hidden rounded-3xl border border-amber-200 bg-amber-50 shadow-sm">
 
-            <div className="border-b border-line px-5 py-4">
+            {/* Header */}
+            <div className="border-b border-amber-200 bg-amber-100/70 px-5 py-5 sm:px-7">
 
-              <p className="text-[16px] font-semibold text-ink">
-                আপনার অর্ডার
-              </p>
+              <div className="flex items-center gap-3">
 
-              <p className="mt-0.5 text-[11px] text-ink-soft">
-                {items.length}টি পণ্য
-              </p>
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
+
+                  <ClipboardList
+                    size={21}
+                    strokeWidth={2.5}
+                    className="text-amber-700"
+                  />
+
+                </div>
+
+                <div>
+
+                  <p className="text-[18px] font-bold text-amber-950 sm:text-[20px]">
+                    আপনার অর্ডার
+                  </p>
+
+                  <p className="mt-0.5 text-[12px] font-medium text-amber-700 sm:text-[13px]">
+                    {items.length}টি পণ্য
+                  </p>
+
+                </div>
+
+              </div>
 
             </div>
 
-            <div className="space-y-4 px-5 py-5">
+            {/* Products */}
+            <div className="space-y-4 px-5 py-5 sm:px-7">
 
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-start gap-3"
+                  className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-white p-3 shadow-sm"
                 >
 
                   {item.image ? (
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="h-14 w-14 shrink-0 rounded-lg border border-line object-cover"
+                      className="h-16 w-16 shrink-0 rounded-xl border border-line object-cover"
                     />
                   ) : (
-                    <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-moss-light">
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-amber-100">
                       <ShoppingBag
-                        size={18}
-                        className="text-ink-soft"
+                        size={20}
+                        className="text-amber-700"
                       />
                     </div>
                   )}
 
                   <div className="min-w-0 flex-1">
 
-                    <p className="line-clamp-2 text-[12px] leading-5 text-ink">
+                    <p className="line-clamp-2 text-[13px] font-bold leading-5 text-ink sm:text-[14px]">
                       {item.name}
                     </p>
 
-                    <p className="mt-0.5 text-[11px] text-ink-soft">
+                    <p className="mt-1 text-[11px] font-medium text-ink-soft sm:text-[12px]">
                       পরিমাণ: {item.qty}
                     </p>
 
                   </div>
 
-                  <span className="shrink-0 text-[12px] font-medium text-ink">
+                  <span className="shrink-0 text-[13px] font-bold text-ink sm:text-[14px]">
                     {formatBDT(item.price * item.qty)}
                   </span>
 
@@ -409,13 +521,15 @@ export default function CheckoutPage() {
             </div>
 
             {/* Price */}
-            <div className="space-y-2 border-t border-line px-5 py-4 text-[12px]">
+            <div className="space-y-3 border-t border-amber-200 bg-white/60 px-5 py-5 text-[13px] sm:px-7 sm:text-[14px]">
 
               <div className="flex justify-between text-ink-soft">
 
-                <span>পণ্যের মূল্য</span>
+                <span className="font-semibold">
+                  পণ্যের মূল্য
+                </span>
 
-                <span className="text-ink">
+                <span className="font-bold text-ink">
                   {formatBDT(subtotal)}
                 </span>
 
@@ -423,9 +537,11 @@ export default function CheckoutPage() {
 
               <div className="flex justify-between text-ink-soft">
 
-                <span>ডেলিভারি চার্জ</span>
+                <span className="font-semibold">
+                  ডেলিভারি চার্জ
+                </span>
 
-                <span className="font-medium text-ink">
+                <span className="font-bold text-ink">
                   {formatBDT(deliveryCharge)}
                 </span>
 
@@ -434,9 +550,11 @@ export default function CheckoutPage() {
               {codCharge > 0 && (
                 <div className="flex justify-between text-ink-soft">
 
-                  <span>COD চার্জ</span>
+                  <span className="font-semibold">
+                    COD চার্জ
+                  </span>
 
-                  <span className="text-ink">
+                  <span className="font-bold text-ink">
                     {formatBDT(codCharge)}
                   </span>
 
@@ -446,48 +564,58 @@ export default function CheckoutPage() {
             </div>
 
             {/* Total */}
-            <div className="border-t border-line bg-moss-light px-5 py-5">
+            <div className="border-t border-emerald-200 bg-emerald-100 px-5 py-6 sm:px-7">
 
               <div className="flex items-center justify-between">
 
                 <div>
 
-                  <p className="text-[12px] text-ink-soft">
+                  <p className="text-[12px] font-bold text-emerald-800 sm:text-[13px]">
                     সর্বমোট মূল্য
                   </p>
 
-                  <p className="mt-0.5 text-[22px] font-bold text-ink">
+                  <p className="mt-1 text-[26px] font-extrabold tracking-tight text-emerald-950 sm:text-[30px]">
                     {formatBDT(total)}
                   </p>
 
                 </div>
 
-                <CheckCircle2
-                  size={25}
-                  className="text-moss-dark"
-                />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
+
+                  <CheckCircle2
+                    size={27}
+                    strokeWidth={2.5}
+                    className="text-emerald-700"
+                  />
+
+                </div>
 
               </div>
 
             </div>
 
             {/* COD */}
-            <div className="px-5 py-4">
+            <div className="px-5 py-5 sm:px-7">
 
-              <div className="flex gap-3 rounded-xl border border-line px-3 py-3">
+              <div className="flex gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-4">
 
-                <Banknote
-                  size={19}
-                  className="mt-0.5 shrink-0 text-ink"
-                />
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white">
+
+                  <Banknote
+                    size={20}
+                    strokeWidth={2.5}
+                    className="text-sky-700"
+                  />
+
+                </div>
 
                 <div>
 
-                  <p className="text-[12px] font-medium text-ink">
+                  <p className="text-[13px] font-bold text-sky-950 sm:text-[14px]">
                     ক্যাশ অন ডেলিভারি
                   </p>
 
-                  <p className="mt-0.5 text-[10.5px] leading-5 text-ink-soft">
+                  <p className="mt-1 text-[11px] font-medium leading-5 text-sky-800 sm:text-[12px]">
                     পণ্য হাতে পাওয়ার পর মূল্য পরিশোধ করুন।
                   </p>
 
@@ -499,17 +627,17 @@ export default function CheckoutPage() {
 
           </div>
 
-          {/* Error */}
+          {/* ================= ERROR ================= */}
           {error && (
-            <div className="mt-5 rounded-xl border border-clay/20 bg-clay/5 px-4 py-3 text-[12px] text-clay">
+            <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-4 text-[13px] font-bold leading-6 text-red-700">
               {error}
             </div>
           )}
 
-          {/* Confirm Order Button */}
+          {/* ================= CONFIRM BUTTON ================= */}
           <button
             type="submit"
-            className="btn-primary mt-5 w-full py-4 text-[14px] font-semibold"
+            className="mt-6 w-full rounded-2xl bg-gradient-to-r from-emerald-700 to-teal-700 py-4 text-[15px] font-extrabold text-white shadow-lg transition hover:from-emerald-800 hover:to-teal-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:py-5 sm:text-[16px]"
             disabled={submitting}
           >
             {submitting
@@ -517,7 +645,7 @@ export default function CheckoutPage() {
               : `অর্ডার কনফার্ম করুন — ${formatBDT(total)}`}
           </button>
 
-          <p className="mt-3 text-center text-[10.5px] leading-5 text-ink-soft">
+          <p className="mt-3 text-center text-[11px] font-medium leading-5 text-ink-soft sm:text-[12px]">
             অর্ডার করার পর আমাদের প্রতিনিধি প্রয়োজন হলে ফোন করে অর্ডারটি নিশ্চিত করবেন।
           </p>
 
