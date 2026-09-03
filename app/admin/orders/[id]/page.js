@@ -32,7 +32,7 @@ export default function AdminOrderDetailPage({ params }) {
         <div className="rounded-2xl border border-line bg-surface p-4">
           <div className="flex items-center justify-between">
             <p className="text-[14px] font-medium text-ink">Status</p>
-            <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${STATUS_STYLES[order.status]}`}>
+            <span className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${STATUS_STYLES[order.status] || "bg-line text-ink-soft"}`}>
               {order.status}
             </span>
           </div>
