@@ -7,6 +7,7 @@ import { formatBDT } from "@/lib/utils";
 import { getStoreSettings } from "@/lib/settings";
 import { createOrder } from "@/lib/orders";
 import { DEFAULT_SETTINGS } from "@/lib/data";
+
 import {
   ShoppingBag,
   Truck,
@@ -46,7 +47,6 @@ export default function CheckoutPage() {
     }
   }, [ready, items.length, submitting, router]);
 
-  // Delivery charge
   const deliveryCharge = useMemo(() => {
     if (form.deliveryArea === "ঢাকার ভিতরে") return 80;
     if (form.deliveryArea === "ঢাকার বাহিরে") return 120;
@@ -54,17 +54,16 @@ export default function CheckoutPage() {
   }, [form.deliveryArea]);
 
   const codCharge = settings.codCharge || 0;
-
   const total = subtotal + deliveryCharge + codCharge;
 
-  function update(field, value) {
+  function update(field: keyof typeof form, value: string) {
     setForm((current) => ({
       ...current,
       [field]: value,
     }));
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
 
@@ -126,519 +125,432 @@ export default function CheckoutPage() {
     }
   }
 
-  if (!ready || items.length === 0) return null;
+  if (!ready || items.length === 0) {
+    return null;
+  }
 
   return (
     <div className="container-page py-6 sm:py-10">
+      <div className="mx-auto max-w-5xl">
 
-      {/* ================= HEADER ================= */}
-      <div className="mx-auto max-w-2xl text-center">
-
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 shadow-sm">
-          <CheckCircle2
-            size={28}
-            strokeWidth={2.5}
-            className="text-emerald-700"
-          />
-        </div>
-
-        <h1 className="font-display text-[30px] font-bold tracking-tight text-ink sm:text-[36px]">
-          অর্ডার কনফার্ম করুন
-        </h1>
-
-        <p className="mt-2 text-[14px] font-medium leading-6 text-ink-soft sm:text-[15px]">
-          আপনার তথ্য দিয়ে অর্ডারটি সম্পন্ন করুন
-        </p>
-
-      </div>
-
-      {/* ================= TRUST CARDS ================= */}
-      <div className="mx-auto mt-7 grid max-w-4xl grid-cols-3 gap-2">
-
-        {/* Delivery */}
-        <div className="rounded-2xl border border-sky-200 bg-sky-50 px-2 py-4 text-center shadow-sm">
-
-          <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-sky-100">
-            <Truck
-              size={19}
-              strokeWidth={2.5}
-              className="text-sky-700"
-            />
+        {/* Header */}
+        <div className="mb-6 text-center sm:mb-8">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700">
+            <CheckCircle2 className="h-4 w-4" />
+            অর্ডার কনফার্ম করুন
           </div>
 
-          <p className="text-[11px] font-bold text-sky-900 sm:text-[13px]">
-            সারা বাংলাদেশে
-          </p>
+          <h1 className="text-2xl font-extrabold text-slate-900 sm:text-3xl">
+            আপনার অর্ডারটি সম্পন্ন করুন
+          </h1>
 
-          <p className="mt-0.5 text-[10px] font-medium text-sky-700 sm:text-[11px]">
-            হোম ডেলিভারি
+          <p className="mt-2 text-sm font-medium text-slate-500 sm:text-base">
+            নিচের তথ্যগুলো সঠিকভাবে পূরণ করুন
           </p>
-
         </div>
 
-        {/* COD */}
-        <div className="rounded-2xl border border-amber-200 bg-amber-50 px-2 py-4 text-center shadow-sm">
+        {/* Trust Cards */}
+        <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          
+          <div className="rounded-2xl border border-violet-100 bg-violet-50 p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
+                <Truck className="h-5 w-5" />
+              </div>
 
-          <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-amber-100">
-            <Banknote
-              size={19}
-              strokeWidth={2.5}
-              className="text-amber-700"
-            />
+              <div>
+                <p className="text-sm font-extrabold text-slate-800">
+                  সারা বাংলাদেশে
+                </p>
+                <p className="text-xs font-semibold text-slate-500">
+                  হোম ডেলিভারি
+                </p>
+              </div>
+            </div>
           </div>
 
-          <p className="text-[11px] font-bold text-amber-900 sm:text-[13px]">
-            ক্যাশ অন ডেলিভারি
-          </p>
+          <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
+                <Banknote className="h-5 w-5" />
+              </div>
 
-          <p className="mt-0.5 text-[10px] font-medium text-amber-700 sm:text-[11px]">
-            হাতে পেয়ে পেমেন্ট
-          </p>
-
-        </div>
-
-        {/* Security */}
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-2 py-4 text-center shadow-sm">
-
-          <div className="mx-auto mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100">
-            <ShieldCheck
-              size={19}
-              strokeWidth={2.5}
-              className="text-emerald-700"
-            />
+              <div>
+                <p className="text-sm font-extrabold text-slate-800">
+                  ক্যাশ অন ডেলিভারি
+                </p>
+                <p className="text-xs font-semibold text-slate-500">
+                  হাতে পেয়ে পেমেন্ট
+                </p>
+              </div>
+            </div>
           </div>
 
-          <p className="text-[11px] font-bold text-emerald-900 sm:text-[13px]">
-            নিরাপদ অর্ডার
-          </p>
+          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
+                <ShieldCheck className="h-5 w-5" />
+              </div>
 
-          <p className="mt-0.5 text-[10px] font-medium text-emerald-700 sm:text-[11px]">
-            সহজ ও ঝামেলামুক্ত
-          </p>
-
+              <div>
+                <p className="text-sm font-extrabold text-slate-800">
+                  নিরাপদ অর্ডার
+                </p>
+                <p className="text-xs font-semibold text-slate-500">
+                  সহজ ও ঝামেলামুক্ত
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-
-      </div>
-
-      {/* ================= MAIN ================= */}
-      <div className="mx-auto mt-7 max-w-5xl">
 
         <form onSubmit={handleSubmit}>
 
-          {/* ================= CUSTOMER INFORMATION ================= */}
-          <div className="overflow-hidden rounded-3xl border border-violet-200 bg-violet-50 shadow-sm">
+          {/* Delivery Information */}
+          <div className="mb-6 overflow-hidden rounded-3xl border border-violet-100 bg-white shadow-sm">
 
-            {/* Header */}
-            <div className="border-b border-violet-200 bg-violet-100/70 px-5 py-5 sm:px-7">
-
+            <div className="border-b border-violet-100 bg-violet-50 px-5 py-4 sm:px-6">
               <div className="flex items-center gap-3">
-
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
-                  <User
-                    size={21}
-                    strokeWidth={2.5}
-                    className="text-violet-700"
-                  />
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
+                  <MapPin className="h-5 w-5" />
                 </div>
 
                 <div>
-
-                  <h2 className="text-[18px] font-bold text-violet-950 sm:text-[20px]">
+                  <h2 className="text-lg font-extrabold text-slate-900">
                     ডেলিভারি তথ্য
                   </h2>
-
-                  <p className="mt-0.5 text-[12px] font-medium text-violet-700 sm:text-[13px]">
-                    সঠিক তথ্য দিয়ে অর্ডারটি সম্পন্ন করুন
+                  <p className="text-xs font-semibold text-slate-500">
+                    যেখানে পণ্যটি ডেলিভারি করতে হবে
                   </p>
-
                 </div>
-
               </div>
-
             </div>
 
-            <div className="p-5 sm:p-7">
+            <div className="space-y-5 p-5 sm:p-6">
 
               {/* Name */}
-              <div className="mb-5">
-
-                <label
-                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
-                  htmlFor="name"
-                >
-                  আপনার নাম *
+              <div>
+                <label className="mb-2 block text-sm font-extrabold text-slate-700">
+                  আপনার নাম <span className="text-red-500">*</span>
                 </label>
 
                 <div className="relative">
-
-                  <User
-                    size={18}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-soft"
-                  />
+                  <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
-                    id="name"
-                    className="input-field pl-11 text-[14px] font-medium sm:text-[15px]"
+                    type="text"
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
                     placeholder="আপনার পূর্ণ নাম লিখুন"
-                    autoComplete="name"
-                    required
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
-
                 </div>
-
               </div>
 
               {/* Phone */}
-              <div className="mb-5">
-
-                <label
-                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
-                  htmlFor="phone"
-                >
-                  মোবাইল নম্বর *
+              <div>
+                <label className="mb-2 block text-sm font-extrabold text-slate-700">
+                  মোবাইল নম্বর <span className="text-red-500">*</span>
                 </label>
 
                 <div className="relative">
-
-                  <Phone
-                    size={18}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-soft"
-                  />
+                  <Phone className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
-                    id="phone"
-                    className="input-field pl-11 text-[14px] font-medium sm:text-[15px]"
+                    type="tel"
+                    inputMode="numeric"
                     value={form.phone}
                     onChange={(e) => update("phone", e.target.value)}
-                    placeholder="01XXXXXXXXX"
-                    inputMode="numeric"
-                    autoComplete="tel"
-                    required
+                    placeholder="০১XXXXXXXXX"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold tracking-wide text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
-
                 </div>
 
-                <p className="mt-2 text-[11px] font-medium text-ink-soft sm:text-[12px]">
-                  📞 অর্ডার কনফার্ম করার জন্য এই নম্বরে যোগাযোগ করা হবে।
+                <p className="mt-1.5 pl-1 text-xs font-medium text-slate-400">
+                  📱 যে নম্বরে আমাদের ডেলিভারি প্রতিনিধি যোগাযোগ করবেন
                 </p>
-
               </div>
 
               {/* Full Address */}
-              <div className="mb-5">
-
-                <label
-                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
-                  htmlFor="address"
-                >
-                  সম্পূর্ণ ঠিকানা *
-                </label>
-
-                <textarea
-                  id="address"
-                  className="input-field min-h-[120px] resize-none text-[14px] font-medium leading-6 sm:text-[15px]"
-                  value={form.address}
-                  onChange={(e) => update("address", e.target.value)}
-                  placeholder="জেলা / থানা / গ্রাম / বাড়ি / রোড লিখুন"
-                  autoComplete="street-address"
-                  required
-                />
-
-                <p className="mt-2 text-[11px] font-medium text-ink-soft sm:text-[12px]">
-                  📍 যত বিস্তারিত ঠিকানা দেবেন, তত সহজে আপনার পণ্য পৌঁছে দেওয়া সম্ভব হবে।
-                </p>
-
-              </div>
-
-              {/* ================= DELIVERY AREA ================= */}
               <div>
-
-                <label
-                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
-                  htmlFor="deliveryArea"
-                >
-                  ডেলিভারি এলাকা *
+                <label className="mb-2 block text-sm font-extrabold text-slate-700">
+                  সম্পূর্ণ ঠিকানা <span className="text-red-500">*</span>
                 </label>
 
                 <div className="relative">
+                  <MapPin className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-400" />
 
-                  <Truck
-                    size={18}
-                    className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-soft"
+                  <textarea
+                    value={form.address}
+                    onChange={(e) => update("address", e.target.value)}
+                    placeholder="জেলা / থানা / গ্রাম / বাড়ি / রোড লিখুন"
+                    rows={4}
+                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold leading-6 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
-
-                  <select
-                    id="deliveryArea"
-                    className="input-field pl-11 text-[14px] font-bold sm:text-[15px]"
-                    value={form.deliveryArea}
-                    onChange={(e) =>
-                      update("deliveryArea", e.target.value)
-                    }
-                    required
-                  >
-
-                    <option value="">
-                      ডেলিভারি এলাকা নির্বাচন করুন
-                    </option>
-
-                    <option value="ঢাকার ভিতরে">
-                      ঢাকার ভিতরে — ৳80
-                    </option>
-
-                    <option value="ঢাকার বাহিরে">
-                      ঢাকার বাহিরে — ৳120
-                    </option>
-
-                  </select>
-
                 </div>
 
-                <p className="mt-2 text-[11px] font-medium text-ink-soft sm:text-[12px]">
-                  🚚 আপনার ঠিকানা অনুযায়ী সঠিক ডেলিভারি অপশন নির্বাচন করুন।
+                <p className="mt-1.5 pl-1 text-xs font-medium text-slate-400">
+                  📍 যত বিস্তারিত ঠিকানা দেবেন, তত সহজে আপনার পণ্য পৌঁছে দেওয়া সম্ভব হবে।
                 </p>
+              </div>
 
+              {/* Delivery Area - Radio Cards */}
+              <div>
+                <label className="mb-3 block text-sm font-extrabold text-slate-700">
+                  ডেলিভারি এলাকা <span className="text-red-500">*</span>
+                </label>
+
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+
+                  {/* Inside Dhaka */}
+                  <label
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition ${
+                      form.deliveryArea === "ঢাকার ভিতরে"
+                        ? "border-violet-500 bg-violet-50 shadow-sm"
+                        : "border-slate-200 bg-slate-50 hover:border-violet-200 hover:bg-violet-50/50"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="deliveryArea"
+                      value="ঢাকার ভিতরে"
+                      checked={form.deliveryArea === "ঢাকার ভিতরে"}
+                      onChange={(e) =>
+                        update("deliveryArea", e.target.value)
+                      }
+                      className="h-5 w-5 shrink-0 accent-violet-600"
+                    />
+
+                    <div className="flex-1">
+                      <p className="text-sm font-extrabold text-slate-800">
+                        ঢাকার ভিতরে
+                      </p>
+                      <p className="mt-0.5 text-sm font-bold text-violet-600">
+                        ৮০ টাকা
+                      </p>
+                    </div>
+
+                    {form.deliveryArea === "ঢাকার ভিতরে" && (
+                      <CheckCircle2 className="h-5 w-5 shrink-0 text-violet-600" />
+                    )}
+                  </label>
+
+                  {/* Outside Dhaka */}
+                  <label
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition ${
+                      form.deliveryArea === "ঢাকার বাহিরে"
+                        ? "border-violet-500 bg-violet-50 shadow-sm"
+                        : "border-slate-200 bg-slate-50 hover:border-violet-200 hover:bg-violet-50/50"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="deliveryArea"
+                      value="ঢাকার বাহিরে"
+                      checked={form.deliveryArea === "ঢাকার বাহিরে"}
+                      onChange={(e) =>
+                        update("deliveryArea", e.target.value)
+                      }
+                      className="h-5 w-5 shrink-0 accent-violet-600"
+                    />
+
+                    <div className="flex-1">
+                      <p className="text-sm font-extrabold text-slate-800">
+                        ঢাকার বাহিরে
+                      </p>
+                      <p className="mt-0.5 text-sm font-bold text-violet-600">
+                        ১২০ টাকা
+                      </p>
+                    </div>
+
+                    {form.deliveryArea === "ঢাকার বাহিরে" && (
+                      <CheckCircle2 className="h-5 w-5 shrink-0 text-violet-600" />
+                    )}
+                  </label>
+
+                </div>
               </div>
 
               {/* Note */}
-              <div className="mt-5">
-
-                <label
-                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
-                  htmlFor="note"
-                >
-                  অতিরিক্ত নির্দেশনা
+              <div>
+                <label className="mb-2 block text-sm font-extrabold text-slate-700">
+                  অতিরিক্ত নির্দেশনা{" "}
+                  <span className="font-medium text-slate-400">
+                    (ঐচ্ছিক)
+                  </span>
                 </label>
 
                 <textarea
-                  id="note"
-                  className="input-field min-h-[80px] resize-none text-[14px] font-medium leading-6 sm:text-[15px]"
                   value={form.note}
                   onChange={(e) => update("note", e.target.value)}
-                  placeholder="ডেলিভারি সংক্রান্ত কোনো নির্দেশনা থাকলে লিখুন (ঐচ্ছিক)"
+                  placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন..."
+                  rows={3}
+                  className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                 />
-
               </div>
 
             </div>
-
           </div>
 
-          {/* ================= ORDER SUMMARY ================= */}
-          <div className="mt-6 overflow-hidden rounded-3xl border border-amber-200 bg-amber-50 shadow-sm">
+          {/* Order Summary */}
+          <div className="mb-6 overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm">
 
-            {/* Header */}
-            <div className="border-b border-amber-200 bg-amber-100/70 px-5 py-5 sm:px-7">
-
+            <div className="border-b border-amber-100 bg-amber-50 px-5 py-4 sm:px-6">
               <div className="flex items-center gap-3">
-
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
-
-                  <ClipboardList
-                    size={21}
-                    strokeWidth={2.5}
-                    className="text-amber-700"
-                  />
-
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
+                  <ClipboardList className="h-5 w-5" />
                 </div>
 
                 <div>
-
-                  <p className="text-[18px] font-bold text-amber-950 sm:text-[20px]">
+                  <h2 className="text-lg font-extrabold text-slate-900">
                     আপনার অর্ডার
+                  </h2>
+                  <p className="text-xs font-semibold text-slate-500">
+                    অর্ডারের বিস্তারিত
                   </p>
-
-                  <p className="mt-0.5 text-[12px] font-medium text-amber-700 sm:text-[13px]">
-                    {items.length}টি পণ্য
-                  </p>
-
                 </div>
-
               </div>
-
             </div>
 
-            {/* Products */}
-            <div className="space-y-4 px-5 py-5 sm:px-7">
+            <div className="p-5 sm:p-6">
 
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-white p-3 shadow-sm"
-                >
-
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="h-16 w-16 shrink-0 rounded-xl border border-line object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-amber-100">
-                      <ShoppingBag
-                        size={20}
-                        className="text-amber-700"
-                      />
+              {/* Products */}
+              <div className="space-y-3">
+                {items.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-3 rounded-2xl bg-slate-50 p-3"
+                  >
+                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-white">
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-slate-300">
+                          <ShoppingBag className="h-6 w-6" />
+                        </div>
+                      )}
                     </div>
-                  )}
 
-                  <div className="min-w-0 flex-1">
+                    <div className="min-w-0 flex-1">
+                      <p className="line-clamp-2 text-sm font-extrabold text-slate-800">
+                        {item.name}
+                      </p>
 
-                    <p className="line-clamp-2 text-[13px] font-bold leading-5 text-ink sm:text-[14px]">
-                      {item.name}
+                      <p className="mt-1 text-xs font-semibold text-slate-500">
+                        {item.qty} × {formatBDT(item.price)}
+                      </p>
+                    </div>
+
+                    <p className="shrink-0 text-sm font-extrabold text-slate-800">
+                      {formatBDT(item.price * item.qty)}
                     </p>
-
-                    <p className="mt-1 text-[11px] font-medium text-ink-soft sm:text-[12px]">
-                      পরিমাণ: {item.qty}
-                    </p>
-
                   </div>
-
-                  <span className="shrink-0 text-[13px] font-bold text-ink sm:text-[14px]">
-                    {formatBDT(item.price * item.qty)}
-                  </span>
-
-                </div>
-              ))}
-
-            </div>
-
-            {/* Price Breakdown */}
-            <div className="space-y-3 border-t border-amber-200 bg-white/60 px-5 py-5 text-[13px] sm:px-7 sm:text-[14px]">
-
-              <div className="flex justify-between text-ink-soft">
-
-                <span className="font-semibold">
-                  পণ্যের মূল্য
-                </span>
-
-                <span className="font-bold text-ink">
-                  {formatBDT(subtotal)}
-                </span>
-
+                ))}
               </div>
 
-              <div className="flex justify-between text-ink-soft">
+              {/* Price Details */}
+              <div className="mt-5 space-y-3 border-t border-slate-100 pt-5">
 
-                <span className="font-semibold">
-                  ডেলিভারি চার্জ
-                </span>
-
-                <span className="font-bold text-ink">
-                  {deliveryCharge > 0
-                    ? formatBDT(deliveryCharge)
-                    : "এলাকা নির্বাচন করুন"}
-                </span>
-
-              </div>
-
-              {codCharge > 0 && (
-                <div className="flex justify-between text-ink-soft">
-
-                  <span className="font-semibold">
-                    COD চার্জ
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-semibold text-slate-500">
+                    পণ্যের মূল্য
                   </span>
 
-                  <span className="font-bold text-ink">
-                    {formatBDT(codCharge)}
+                  <span className="font-extrabold text-slate-800">
+                    {formatBDT(subtotal)}
                   </span>
-
                 </div>
-              )}
 
-            </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="font-semibold text-slate-500">
+                    ডেলিভারি চার্জ
+                  </span>
 
-            {/* Total */}
-            <div className="border-t border-emerald-200 bg-emerald-100 px-5 py-6 sm:px-7">
+                  <span className="font-extrabold text-slate-800">
+                    {deliveryCharge > 0
+                      ? formatBDT(deliveryCharge)
+                      : "এলাকা নির্বাচন করুন"}
+                  </span>
+                </div>
 
-              <div className="flex items-center justify-between">
+                {codCharge > 0 && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-semibold text-slate-500">
+                      COD চার্জ
+                    </span>
 
-                <div>
+                    <span className="font-extrabold text-slate-800">
+                      {formatBDT(codCharge)}
+                    </span>
+                  </div>
+                )}
 
-                  <p className="text-[12px] font-bold text-emerald-800 sm:text-[13px]">
-                    সর্বমোট মূল্য
-                  </p>
+                <div className="mt-4 flex items-center justify-between rounded-2xl bg-emerald-50 px-4 py-4">
+                  <span className="text-base font-extrabold text-slate-800">
+                    সর্বমোট
+                  </span>
 
-                  <p className="mt-1 text-[27px] font-extrabold tracking-tight text-emerald-950 sm:text-[30px]">
+                  <span className="text-xl font-black text-emerald-600">
                     {formatBDT(total)}
-                  </p>
-
-                </div>
-
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-sm">
-
-                  <CheckCircle2
-                    size={27}
-                    strokeWidth={2.5}
-                    className="text-emerald-700"
-                  />
-
+                  </span>
                 </div>
 
               </div>
 
-            </div>
-
-            {/* COD Info */}
-            <div className="px-5 py-5 sm:px-7">
-
-              <div className="flex gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-4">
-
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white">
-
-                  <Banknote
-                    size={20}
-                    strokeWidth={2.5}
-                    className="text-sky-700"
-                  />
-
-                </div>
+              {/* COD Notice */}
+              <div className="mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 p-4">
+                <Banknote className="mt-0.5 h-5 w-5 shrink-0 text-sky-600" />
 
                 <div>
-
-                  <p className="text-[13px] font-bold text-sky-950 sm:text-[14px]">
+                  <p className="text-sm font-extrabold text-sky-800">
                     ক্যাশ অন ডেলিভারি
                   </p>
 
-                  <p className="mt-1 text-[11px] font-medium leading-5 text-sky-800 sm:text-[12px]">
-                    পণ্য হাতে পাওয়ার পর মূল্য পরিশোধ করুন।
+                  <p className="mt-1 text-xs font-medium leading-5 text-sky-700">
+                    পণ্য হাতে পাওয়ার পর ডেলিভারি প্রতিনিধিকে পেমেন্ট করতে পারবেন।
                   </p>
-
                 </div>
-
               </div>
 
             </div>
-
           </div>
 
-          {/* ================= ERROR ================= */}
+          {/* Error */}
           {error && (
-            <div className="mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-4 text-[13px] font-bold leading-6 text-red-700">
+            <div className="mb-5 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
               {error}
             </div>
           )}
 
-          {/* ================= CONFIRM BUTTON ================= */}
+          {/* Confirm Button */}
           <button
             type="submit"
-            className="mt-6 w-full rounded-2xl bg-gradient-to-r from-emerald-700 to-teal-700 py-4 text-[15px] font-extrabold text-white shadow-lg transition hover:from-emerald-800 hover:to-teal-800 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:py-5 sm:text-[16px]"
             disabled={submitting}
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-4 text-base font-extrabold text-white shadow-lg shadow-emerald-100 transition hover:from-emerald-600 hover:to-teal-600 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {submitting
-              ? "অর্ডার কনফার্ম করা হচ্ছে..."
-              : `অর্ডার কনফার্ম করুন — ${formatBDT(total)}`}
+            {submitting ? (
+              <>
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                অর্ডার প্রসেস হচ্ছে...
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                অর্ডার কনফার্ম করুন
+              </>
+            )}
           </button>
 
-          <p className="mt-3 text-center text-[11px] font-medium leading-5 text-ink-soft sm:text-[12px]">
-            অর্ডার করার পর আমাদের প্রতিনিধি প্রয়োজন হলে ফোন করে অর্ডারটি নিশ্চিত করবেন।
+          <p className="mt-3 text-center text-xs font-semibold text-slate-400">
+            অর্ডার কনফার্ম করার পর আমাদের প্রতিনিধি প্রয়োজন হলে আপনার সাথে যোগাযোগ করবেন।
           </p>
 
         </form>
-
       </div>
-
     </div>
   );
 }
