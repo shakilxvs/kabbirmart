@@ -73,14 +73,14 @@ export default function CheckoutPage() {
       !form.address.trim() ||
       !form.deliveryArea
     ) {
-      setError("⚠️ দয়া করে প্রয়োজনীয় সব তথ্য পূরণ করুন।");
+      setError("দয়া করে প্রয়োজনীয় সব তথ্য পূরণ করুন।");
       return;
     }
 
     const cleanPhone = form.phone.replace(/[\s-]/g, "");
 
     if (!/^01[0-9]{9}$/.test(cleanPhone)) {
-      setError("⚠️ সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।");
+      setError("সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।");
       return;
     }
 
@@ -97,15 +97,15 @@ export default function CheckoutPage() {
         })),
 
         customer: {
-          name: form.name,
+          name: form.name.trim(),
           phone: cleanPhone,
-          address: form.address,
+          address: form.address.trim(),
           deliveryArea: form.deliveryArea,
-          note: form.note,
+          note: form.note.trim(),
 
           division: "",
           district: "",
-          area: form.address,
+          area: form.address.trim(),
           upazila: "",
         },
 
@@ -118,7 +118,7 @@ export default function CheckoutPage() {
       router.push(`/order/${order.id}`);
     } catch (err) {
       console.error(err);
-      setError("❌ অর্ডার সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
+      setError("অর্ডার সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
       setSubmitting(false);
     }
   }
@@ -131,11 +131,11 @@ export default function CheckoutPage() {
     <div className="container-page py-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
 
-        {/* HEADER */}
+        {/* PAGE HEADER */}
         <div className="mb-6 text-center sm:mb-8">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700">
-            <CheckCircle2 className="h-4 w-4" />
-            অর্ডার কনফার্ম করুন
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            <span>অর্ডার কনফার্ম করুন</span>
           </div>
 
           <h1 className="text-2xl font-extrabold text-slate-900 sm:text-3xl">
@@ -147,55 +147,66 @@ export default function CheckoutPage() {
           </p>
         </div>
 
-        {/* TRUST BOXES */}
-        <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="rounded-2xl border border-violet-100 bg-violet-50 p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
-                <Truck className="h-5 w-5" />
+        {/* 3 BENEFIT BOXES */}
+        <div className="mb-6 grid grid-cols-3 gap-2 sm:gap-4">
+
+          <div className="min-w-0 rounded-xl border border-violet-100 bg-violet-50 p-2.5 sm:rounded-2xl sm:p-4">
+            <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
+
+              <div className="mb-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-600 sm:mb-0 sm:mr-3 sm:h-10 sm:w-10 sm:rounded-xl">
+                <Truck className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
-              <div>
-                <p className="text-sm font-extrabold text-slate-800">
+
+              <div className="min-w-0">
+                <p className="break-words text-[10px] font-extrabold leading-tight text-slate-800 sm:text-sm">
                   সারা বাংলাদেশে
                 </p>
-                <p className="text-xs font-semibold text-slate-500">
+                <p className="mt-1 break-words text-[9px] font-semibold leading-tight text-slate-500 sm:text-xs">
                   হোম ডেলিভারি
                 </p>
               </div>
+
             </div>
           </div>
 
-          <div className="rounded-2xl border border-sky-100 bg-sky-50 p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
-                <Banknote className="h-5 w-5" />
+          <div className="min-w-0 rounded-xl border border-sky-100 bg-sky-50 p-2.5 sm:rounded-2xl sm:p-4">
+            <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
+
+              <div className="mb-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-600 sm:mb-0 sm:mr-3 sm:h-10 sm:w-10 sm:rounded-xl">
+                <Banknote className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
-              <div>
-                <p className="text-sm font-extrabold text-slate-800">
+
+              <div className="min-w-0">
+                <p className="break-words text-[10px] font-extrabold leading-tight text-slate-800 sm:text-sm">
                   ক্যাশ অন ডেলিভারি
                 </p>
-                <p className="text-xs font-semibold text-slate-500">
-                  হাতে পেয়ে পেমেন্ট
+                <p className="mt-1 break-words text-[9px] font-semibold leading-tight text-slate-500 sm:text-xs">
+                  পণ্য হাতে পেয়ে পেমেন্ট
                 </p>
               </div>
+
             </div>
           </div>
 
-          <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
-                <ShieldCheck className="h-5 w-5" />
+          <div className="min-w-0 rounded-xl border border-emerald-100 bg-emerald-50 p-2.5 sm:rounded-2xl sm:p-4">
+            <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
+
+              <div className="mb-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 sm:mb-0 sm:mr-3 sm:h-10 sm:w-10 sm:rounded-xl">
+                <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
-              <div>
-                <p className="text-sm font-extrabold text-slate-800">
+
+              <div className="min-w-0">
+                <p className="break-words text-[10px] font-extrabold leading-tight text-slate-800 sm:text-sm">
                   নিরাপদ অর্ডার
                 </p>
-                <p className="text-xs font-semibold text-slate-500">
+                <p className="mt-1 break-words text-[9px] font-semibold leading-tight text-slate-500 sm:text-xs">
                   সহজ ও ঝামেলামুক্ত
                 </p>
               </div>
+
             </div>
           </div>
+
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -205,7 +216,8 @@ export default function CheckoutPage() {
 
             <div className="border-b border-violet-100 bg-violet-50 px-5 py-4 sm:px-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
+
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
                   <MapPin className="h-5 w-5" />
                 </div>
 
@@ -213,10 +225,12 @@ export default function CheckoutPage() {
                   <h2 className="text-lg font-extrabold text-slate-900">
                     ডেলিভারি তথ্য
                   </h2>
+
                   <p className="text-xs font-semibold text-slate-500">
                     যেখানে পণ্যটি ডেলিভারি করতে হবে
                   </p>
                 </div>
+
               </div>
             </div>
 
@@ -229,7 +243,7 @@ export default function CheckoutPage() {
                 </label>
 
                 <div className="relative">
-                  <User className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
                     type="text"
@@ -248,7 +262,7 @@ export default function CheckoutPage() {
                 </label>
 
                 <div className="relative">
-                  <Phone className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <Phone className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
                     type="tel"
@@ -261,7 +275,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <p className="mt-1.5 text-xs font-medium text-slate-400">
-                  📱 যে নম্বরে আমাদের ডেলিভারি প্রতিনিধি যোগাযোগ করবেন
+                  যে নম্বরে ডেলিভারি প্রতিনিধি যোগাযোগ করবেন
                 </p>
               </div>
 
@@ -272,7 +286,7 @@ export default function CheckoutPage() {
                 </label>
 
                 <div className="relative">
-                  <MapPin className="pointer-events-none absolute left-4 top-4 z-10 h-5 w-5 text-slate-400" />
+                  <MapPin className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-400" />
 
                   <textarea
                     value={form.address}
@@ -284,12 +298,13 @@ export default function CheckoutPage() {
                 </div>
 
                 <p className="mt-1.5 text-xs font-medium text-slate-400">
-                  📍 যত বিস্তারিত ঠিকানা দেবেন, তত সহজে আপনার পণ্য পৌঁছে দেওয়া সম্ভব হবে।
+                  বিস্তারিত ঠিকানা দিলে দ্রুত ও সহজে ডেলিভারি করা সম্ভব হবে।
                 </p>
               </div>
 
               {/* DELIVERY AREA */}
               <div className="rounded-2xl border border-violet-100 bg-violet-50/50 p-4 sm:p-5">
+
                 <label className="mb-3 block text-base font-extrabold text-slate-800">
                   ডেলিভারি এলাকা <span className="text-red-500">*</span>
                 </label>
@@ -308,9 +323,7 @@ export default function CheckoutPage() {
                       name="deliveryArea"
                       value="ঢাকার ভিতরে"
                       checked={form.deliveryArea === "ঢাকার ভিতরে"}
-                      onChange={(e) =>
-                        update("deliveryArea", e.target.value)
-                      }
+                      onChange={(e) => update("deliveryArea", e.target.value)}
                       className="h-5 w-5 shrink-0 accent-violet-600"
                     />
 
@@ -318,7 +331,7 @@ export default function CheckoutPage() {
                       ঢাকার ভিতরে
                     </span>
 
-                    <span className="text-sm font-black text-violet-600">
+                    <span className="shrink-0 text-sm font-black text-violet-600">
                       ৮০ টাকা
                     </span>
                   </label>
@@ -335,9 +348,7 @@ export default function CheckoutPage() {
                       name="deliveryArea"
                       value="ঢাকার বাহিরে"
                       checked={form.deliveryArea === "ঢাকার বাহিরে"}
-                      onChange={(e) =>
-                        update("deliveryArea", e.target.value)
-                      }
+                      onChange={(e) => update("deliveryArea", e.target.value)}
                       className="h-5 w-5 shrink-0 accent-violet-600"
                     />
 
@@ -345,7 +356,7 @@ export default function CheckoutPage() {
                       ঢাকার বাহিরে
                     </span>
 
-                    <span className="text-sm font-black text-violet-600">
+                    <span className="shrink-0 text-sm font-black text-violet-600">
                       ১২০ টাকা
                     </span>
                   </label>
@@ -353,11 +364,11 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* NOTE */}
+              {/* ORDER NOTE */}
               <div>
                 <label className="mb-2 block text-sm font-extrabold text-slate-700">
-                  অতিরিক্ত নির্দেশনা{" "}
-                  <span className="font-medium text-slate-400">
+                  অতিরিক্ত নির্দেশনা
+                  <span className="ml-1 font-medium text-slate-400">
                     (ঐচ্ছিক)
                   </span>
                 </label>
@@ -379,7 +390,8 @@ export default function CheckoutPage() {
 
             <div className="border-b border-amber-100 bg-amber-50 px-5 py-4 sm:px-6">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
+
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
                   <ClipboardList className="h-5 w-5" />
                 </div>
 
@@ -387,22 +399,26 @@ export default function CheckoutPage() {
                   <h2 className="text-lg font-extrabold text-slate-900">
                     আপনার অর্ডার
                   </h2>
+
                   <p className="text-xs font-semibold text-slate-500">
                     অর্ডারের বিস্তারিত
                   </p>
                 </div>
+
               </div>
             </div>
 
             <div className="p-5 sm:p-6">
 
               <div className="space-y-3">
+
                 {items.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center gap-3 rounded-2xl bg-slate-50 p-3"
                   >
                     <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-white">
+
                       {item.image ? (
                         <img
                           src={item.image}
@@ -414,10 +430,11 @@ export default function CheckoutPage() {
                           <ShoppingBag className="h-6 w-6" />
                         </div>
                       )}
+
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <p className="line-clamp-2 text-sm font-extrabold text-slate-800">
+                      <p className="break-words text-sm font-extrabold leading-5 text-slate-800">
                         {item.name}
                       </p>
 
@@ -431,24 +448,27 @@ export default function CheckoutPage() {
                     </p>
                   </div>
                 ))}
+
               </div>
 
               <div className="mt-5 space-y-3 border-t border-slate-100 pt-5">
 
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between gap-4 text-sm">
                   <span className="font-semibold text-slate-500">
                     পণ্যের মূল্য
                   </span>
-                  <span className="font-extrabold text-slate-800">
+
+                  <span className="shrink-0 font-extrabold text-slate-800">
                     {formatBDT(subtotal)}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between gap-4 text-sm">
                   <span className="font-semibold text-slate-500">
                     ডেলিভারি চার্জ
                   </span>
-                  <span className="font-extrabold text-slate-800">
+
+                  <span className="shrink-0 text-right font-extrabold text-slate-800">
                     {deliveryCharge > 0
                       ? formatBDT(deliveryCharge)
                       : "এলাকা নির্বাচন করুন"}
@@ -456,22 +476,23 @@ export default function CheckoutPage() {
                 </div>
 
                 {codCharge > 0 && (
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between gap-4 text-sm">
                     <span className="font-semibold text-slate-500">
                       COD চার্জ
                     </span>
-                    <span className="font-extrabold text-slate-800">
+
+                    <span className="shrink-0 font-extrabold text-slate-800">
                       {formatBDT(codCharge)}
                     </span>
                   </div>
                 )}
 
-                <div className="flex items-center justify-between rounded-2xl bg-emerald-50 px-4 py-4">
+                <div className="flex items-center justify-between gap-4 rounded-2xl bg-emerald-50 px-4 py-4">
                   <span className="text-base font-extrabold text-slate-800">
                     সর্বমোট
                   </span>
 
-                  <span className="text-xl font-black text-emerald-600">
+                  <span className="shrink-0 text-xl font-black text-emerald-600">
                     {formatBDT(total)}
                   </span>
                 </div>
@@ -479,6 +500,7 @@ export default function CheckoutPage() {
               </div>
 
               <div className="mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 p-4">
+
                 <Banknote className="mt-0.5 h-5 w-5 shrink-0 text-sky-600" />
 
                 <div>
@@ -487,22 +509,23 @@ export default function CheckoutPage() {
                   </p>
 
                   <p className="mt-1 text-xs font-medium leading-5 text-sky-700">
-                    পণ্য হাতে পাওয়ার পর ডেলিভারি প্রতিনিধিকে পেমেন্ট করতে পারবেন।
+                    পণ্য হাতে পাওয়ার পর ডেলিভারি প্রতিনিধিকে পেমেন্ট করুন।
                   </p>
                 </div>
+
               </div>
 
             </div>
           </div>
 
-          {/* ERROR */}
+          {/* ERROR MESSAGE */}
           {error && (
             <div className="mb-5 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
               {error}
             </div>
           )}
 
-          {/* CONFIRM BUTTON */}
+          {/* CONFIRM ORDER BUTTON */}
           <button
             type="submit"
             disabled={submitting}
@@ -522,7 +545,7 @@ export default function CheckoutPage() {
           </button>
 
           <p className="mt-3 text-center text-xs font-semibold text-slate-400">
-            অর্ডার কনফার্ম করার পর আমাদের প্রতিনিধি প্রয়োজন হলে আপনার সাথে যোগাযোগ করবেন।
+            অর্ডার কনফার্ম করার পর প্রয়োজন হলে আমাদের প্রতিনিধি আপনার সাথে যোগাযোগ করবেন।
           </p>
 
         </form>
