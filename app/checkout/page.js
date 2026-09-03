@@ -6,7 +6,7 @@ import { useCart } from "@/lib/cart-context";
 import { formatBDT } from "@/lib/utils";
 import { getStoreSettings } from "@/lib/settings";
 import { createOrder } from "@/lib/orders";
-import { BD_DISTRICTS, DEFAULT_SETTINGS } from "@/lib/data";
+import { DEFAULT_SETTINGS } from "@/lib/data";
 import {
   ShoppingBag,
   Truck,
@@ -28,9 +28,8 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    district: "",
-    upazila: "",
     address: "",
+    deliveryArea: "",
     note: "",
   });
 
@@ -47,20 +46,21 @@ export default function CheckoutPage() {
     }
   }, [ready, items.length, submitting, router]);
 
-  // ঢাকা জেলা = ৮০ টাকা
-  // ঢাকা ছাড়া সব জেলা = ১২০ টাকা
+  // Delivery charge
   const deliveryCharge = useMemo(() => {
-    return form.district === "ঢাকা" ? 80 : 120;
-  }, [form.district]);
+    if (form.deliveryArea === "ঢাকার ভিতরে") return 80;
+    if (form.deliveryArea === "ঢাকার বাহিরে") return 120;
+    return 0;
+  }, [form.deliveryArea]);
 
   const codCharge = settings.codCharge || 0;
+
   const total = subtotal + deliveryCharge + codCharge;
 
   function update(field, value) {
-    setForm((f) => ({
-      ...f,
+    setForm((current) => ({
+      ...current,
       [field]: value,
-      ...(field === "district" ? { upazila: "" } : {}),
     }));
   }
 
@@ -71,15 +71,16 @@ export default function CheckoutPage() {
     if (
       !form.name.trim() ||
       !form.phone.trim() ||
-      !form.district ||
-      !form.upazila ||
-      !form.address.trim()
+      !form.address.trim() ||
+      !form.deliveryArea
     ) {
       setError("⚠️ দয়া করে প্রয়োজনীয় সব তথ্য পূরণ করুন।");
       return;
     }
 
-    if (!/^0?1[0-9]{9}$/.test(form.phone.replace(/[\s-]/g, ""))) {
+    const cleanPhone = form.phone.replace(/[\s-]/g, "");
+
+    if (!/^01[0-9]{9}$/.test(cleanPhone)) {
       setError("⚠️ সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।");
       return;
     }
@@ -97,10 +98,17 @@ export default function CheckoutPage() {
         })),
 
         customer: {
-          ...form,
+          name: form.name,
+          phone: cleanPhone,
+          address: form.address,
+          deliveryArea: form.deliveryArea,
+          note: form.note,
+
+          // Existing order structure compatibility
           division: "",
-          district: form.district,
-          area: form.upazila,
+          district: "",
+          area: form.address,
+          upazila: "",
         },
 
         subtotal,
@@ -119,12 +127,6 @@ export default function CheckoutPage() {
   }
 
   if (!ready || items.length === 0) return null;
-
-  const districts = Object.keys(BD_DISTRICTS);
-
-  const upazilas = form.district
-    ? BD_DISTRICTS[form.district] || []
-    : [];
 
   return (
     <div className="container-page py-6 sm:py-10">
@@ -150,7 +152,7 @@ export default function CheckoutPage() {
 
       </div>
 
-      {/* ================= TRUST SECTION ================= */}
+      {/* ================= TRUST CARDS ================= */}
       <div className="mx-auto mt-7 grid max-w-4xl grid-cols-3 gap-2">
 
         {/* Delivery */}
@@ -223,16 +225,16 @@ export default function CheckoutPage() {
 
         <form onSubmit={handleSubmit}>
 
-          {/* ================= DELIVERY INFORMATION ================= */}
+          {/* ================= CUSTOMER INFORMATION ================= */}
           <div className="overflow-hidden rounded-3xl border border-violet-200 bg-violet-50 shadow-sm">
 
-            {/* Section Header */}
+            {/* Header */}
             <div className="border-b border-violet-200 bg-violet-100/70 px-5 py-5 sm:px-7">
 
               <div className="flex items-center gap-3">
 
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm">
-                  <MapPin
+                  <User
                     size={21}
                     strokeWidth={2.5}
                     className="text-violet-700"
@@ -246,7 +248,7 @@ export default function CheckoutPage() {
                   </h2>
 
                   <p className="mt-0.5 text-[12px] font-medium text-violet-700 sm:text-[13px]">
-                    আপনার সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন
+                    সঠিক তথ্য দিয়ে অর্ডারটি সম্পন্ন করুন
                   </p>
 
                 </div>
@@ -324,73 +326,6 @@ export default function CheckoutPage() {
 
               </div>
 
-              {/* District */}
-              <div className="mb-5">
-
-                <label
-                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
-                  htmlFor="district"
-                >
-                  জেলা *
-                </label>
-
-                <select
-                  id="district"
-                  className="input-field text-[14px] font-semibold sm:text-[15px]"
-                  value={form.district}
-                  onChange={(e) => update("district", e.target.value)}
-                  required
-                >
-
-                  <option value="">
-                    জেলা নির্বাচন করুন
-                  </option>
-
-                  {districts.map((district) => (
-                    <option key={district} value={district}>
-                      {district}
-                    </option>
-                  ))}
-
-                </select>
-
-              </div>
-
-              {/* Upazila */}
-              <div className="mb-5">
-
-                <label
-                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
-                  htmlFor="upazila"
-                >
-                  থানা / উপজেলা *
-                </label>
-
-                <select
-                  id="upazila"
-                  className="input-field text-[14px] font-semibold sm:text-[15px]"
-                  value={form.upazila}
-                  onChange={(e) => update("upazila", e.target.value)}
-                  required
-                  disabled={!form.district}
-                >
-
-                  <option value="">
-                    {form.district
-                      ? "থানা / উপজেলা নির্বাচন করুন"
-                      : "প্রথমে জেলা নির্বাচন করুন"}
-                  </option>
-
-                  {upazilas.map((upazila) => (
-                    <option key={upazila} value={upazila}>
-                      {upazila}
-                    </option>
-                  ))}
-
-                </select>
-
-              </div>
-
               {/* Full Address */}
               <div className="mb-5">
 
@@ -403,22 +338,71 @@ export default function CheckoutPage() {
 
                 <textarea
                   id="address"
-                  className="input-field min-h-[115px] resize-none text-[14px] font-medium leading-6 sm:text-[15px]"
+                  className="input-field min-h-[120px] resize-none text-[14px] font-medium leading-6 sm:text-[15px]"
                   value={form.address}
                   onChange={(e) => update("address", e.target.value)}
-                  placeholder="বাসা/বাড়ি, রোড, গ্রাম/মহল্লা, ইউনিয়ন, ওয়ার্ড ইত্যাদিসহ সম্পূর্ণ ঠিকানা লিখুন"
+                  placeholder="জেলা / থানা / গ্রাম / বাড়ি / রোড লিখুন"
                   autoComplete="street-address"
                   required
                 />
 
                 <p className="mt-2 text-[11px] font-medium text-ink-soft sm:text-[12px]">
-                  📍 বিস্তারিত ঠিকানা দিলে দ্রুত ও সঠিকভাবে ডেলিভারি দেওয়া সম্ভব হবে।
+                  📍 যত বিস্তারিত ঠিকানা দেবেন, তত সহজে আপনার পণ্য পৌঁছে দেওয়া সম্ভব হবে।
+                </p>
+
+              </div>
+
+              {/* ================= DELIVERY AREA ================= */}
+              <div>
+
+                <label
+                  className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
+                  htmlFor="deliveryArea"
+                >
+                  ডেলিভারি এলাকা *
+                </label>
+
+                <div className="relative">
+
+                  <Truck
+                    size={18}
+                    className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-soft"
+                  />
+
+                  <select
+                    id="deliveryArea"
+                    className="input-field pl-11 text-[14px] font-bold sm:text-[15px]"
+                    value={form.deliveryArea}
+                    onChange={(e) =>
+                      update("deliveryArea", e.target.value)
+                    }
+                    required
+                  >
+
+                    <option value="">
+                      ডেলিভারি এলাকা নির্বাচন করুন
+                    </option>
+
+                    <option value="ঢাকার ভিতরে">
+                      ঢাকার ভিতরে — ৳80
+                    </option>
+
+                    <option value="ঢাকার বাহিরে">
+                      ঢাকার বাহিরে — ৳120
+                    </option>
+
+                  </select>
+
+                </div>
+
+                <p className="mt-2 text-[11px] font-medium text-ink-soft sm:text-[12px]">
+                  🚚 আপনার ঠিকানা অনুযায়ী সঠিক ডেলিভারি অপশন নির্বাচন করুন।
                 </p>
 
               </div>
 
               {/* Note */}
-              <div>
+              <div className="mt-5">
 
                 <label
                   className="mb-2 block text-[13px] font-bold text-ink sm:text-[14px]"
@@ -520,7 +504,7 @@ export default function CheckoutPage() {
 
             </div>
 
-            {/* Price */}
+            {/* Price Breakdown */}
             <div className="space-y-3 border-t border-amber-200 bg-white/60 px-5 py-5 text-[13px] sm:px-7 sm:text-[14px]">
 
               <div className="flex justify-between text-ink-soft">
@@ -542,7 +526,9 @@ export default function CheckoutPage() {
                 </span>
 
                 <span className="font-bold text-ink">
-                  {formatBDT(deliveryCharge)}
+                  {deliveryCharge > 0
+                    ? formatBDT(deliveryCharge)
+                    : "এলাকা নির্বাচন করুন"}
                 </span>
 
               </div>
@@ -574,7 +560,7 @@ export default function CheckoutPage() {
                     সর্বমোট মূল্য
                   </p>
 
-                  <p className="mt-1 text-[26px] font-extrabold tracking-tight text-emerald-950 sm:text-[30px]">
+                  <p className="mt-1 text-[27px] font-extrabold tracking-tight text-emerald-950 sm:text-[30px]">
                     {formatBDT(total)}
                   </p>
 
@@ -594,7 +580,7 @@ export default function CheckoutPage() {
 
             </div>
 
-            {/* COD */}
+            {/* COD Info */}
             <div className="px-5 py-5 sm:px-7">
 
               <div className="flex gap-3 rounded-2xl border border-sky-200 bg-sky-50 px-4 py-4">
