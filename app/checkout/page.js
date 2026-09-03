@@ -133,12 +133,12 @@ export default function CheckoutPage() {
 
         {/* PAGE HEADER */}
         <div className="mb-6 text-center sm:mb-8">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700 transition-transform duration-200 active:scale-95">
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             <span>অর্ডার কনফার্ম করুন</span>
           </div>
 
-          <h1 className="text-2xl font-extrabold text-slate-900 sm:text-3xl">
+          <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">
             আপনার অর্ডারটি সম্পন্ন করুন
           </h1>
 
@@ -150,18 +150,19 @@ export default function CheckoutPage() {
         {/* 3 BENEFIT BOXES */}
         <div className="mb-6 grid grid-cols-3 gap-2 sm:gap-4">
 
-          <div className="min-w-0 rounded-xl border border-violet-100 bg-violet-50 p-2.5 sm:rounded-2xl sm:p-4">
+          <div className="min-w-0 rounded-xl border border-violet-100 bg-violet-50 p-2.5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] sm:rounded-2xl sm:p-4">
             <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
 
-              <div className="mb-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-600 sm:mb-0 sm:mr-3 sm:h-10 sm:w-10 sm:rounded-xl">
-                <Truck className="h-4 w-4 sm:h-5 sm:w-5" />
+              <div className="mb-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600 transition-transform duration-200 sm:mb-0 sm:mr-3 sm:h-11 sm:w-11">
+                <Truck className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
               </div>
 
               <div className="min-w-0">
-                <p className="break-words text-[10px] font-extrabold leading-tight text-slate-800 sm:text-sm">
+                <p className="break-words text-[11px] font-extrabold leading-[1.25] text-slate-800 sm:text-sm">
                   সারা বাংলাদেশে
                 </p>
-                <p className="mt-1 break-words text-[9px] font-semibold leading-tight text-slate-500 sm:text-xs">
+
+                <p className="mt-1 break-words text-[10px] font-semibold leading-[1.25] text-slate-500 sm:text-xs">
                   হোম ডেলিভারি
                 </p>
               </div>
@@ -169,18 +170,19 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <div className="min-w-0 rounded-xl border border-sky-100 bg-sky-50 p-2.5 sm:rounded-2xl sm:p-4">
+          <div className="min-w-0 rounded-xl border border-sky-100 bg-sky-50 p-2.5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] sm:rounded-2xl sm:p-4">
             <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
 
-              <div className="mb-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-100 text-sky-600 sm:mb-0 sm:mr-3 sm:h-10 sm:w-10 sm:rounded-xl">
-                <Banknote className="h-4 w-4 sm:h-5 sm:w-5" />
+              <div className="mb-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-600 sm:mb-0 sm:mr-3 sm:h-11 sm:w-11">
+                <Banknote className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
               </div>
 
               <div className="min-w-0">
-                <p className="break-words text-[10px] font-extrabold leading-tight text-slate-800 sm:text-sm">
+                <p className="break-words text-[11px] font-extrabold leading-[1.25] text-slate-800 sm:text-sm">
                   ক্যাশ অন ডেলিভারি
                 </p>
-                <p className="mt-1 break-words text-[9px] font-semibold leading-tight text-slate-500 sm:text-xs">
+
+                <p className="mt-1 break-words text-[10px] font-semibold leading-[1.25] text-slate-500 sm:text-xs">
                   পণ্য হাতে পেয়ে পেমেন্ট
                 </p>
               </div>
@@ -188,18 +190,19 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <div className="min-w-0 rounded-xl border border-emerald-100 bg-emerald-50 p-2.5 sm:rounded-2xl sm:p-4">
+          <div className="min-w-0 rounded-xl border border-emerald-100 bg-emerald-50 p-2.5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] sm:rounded-2xl sm:p-4">
             <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
 
-              <div className="mb-1.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 sm:mb-0 sm:mr-3 sm:h-10 sm:w-10 sm:rounded-xl">
-                <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" />
+              <div className="mb-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 sm:mb-0 sm:mr-3 sm:h-11 sm:w-11">
+                <ShieldCheck className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
               </div>
 
               <div className="min-w-0">
-                <p className="break-words text-[10px] font-extrabold leading-tight text-slate-800 sm:text-sm">
+                <p className="break-words text-[11px] font-extrabold leading-[1.25] text-slate-800 sm:text-sm">
                   নিরাপদ অর্ডার
                 </p>
-                <p className="mt-1 break-words text-[9px] font-semibold leading-tight text-slate-500 sm:text-xs">
+
+                <p className="mt-1 break-words text-[10px] font-semibold leading-[1.25] text-slate-500 sm:text-xs">
                   সহজ ও ঝামেলামুক্ত
                 </p>
               </div>
@@ -212,12 +215,12 @@ export default function CheckoutPage() {
         <form onSubmit={handleSubmit}>
 
           {/* DELIVERY INFORMATION */}
-          <div className="mb-6 overflow-hidden rounded-3xl border border-violet-100 bg-white shadow-sm">
+          <div className="mb-6 overflow-hidden rounded-3xl border border-violet-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md">
 
             <div className="border-b border-violet-100 bg-violet-50 px-5 py-4 sm:px-6">
               <div className="flex items-center gap-3">
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-600 transition-transform duration-200 hover:scale-105">
                   <MapPin className="h-5 w-5" />
                 </div>
 
@@ -238,30 +241,30 @@ export default function CheckoutPage() {
 
               {/* NAME */}
               <div>
-                <label className="mb-2 block text-sm font-extrabold text-slate-700">
+                <label className="mb-2 block text-[15px] font-extrabold text-slate-700">
                   আপনার নাম <span className="text-red-500">*</span>
                 </label>
 
-                <div className="relative">
-                  <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <div className="relative transition-transform duration-200 focus-within:-translate-y-[1px]">
+                  <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 transition-colors duration-200" />
 
                   <input
                     type="text"
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
                     placeholder="আপনার পূর্ণ নাম লিখুন"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
                   />
                 </div>
               </div>
 
               {/* PHONE */}
               <div>
-                <label className="mb-2 block text-sm font-extrabold text-slate-700">
+                <label className="mb-2 block text-[15px] font-extrabold text-slate-700">
                   মোবাইল নম্বর <span className="text-red-500">*</span>
                 </label>
 
-                <div className="relative">
+                <div className="relative transition-transform duration-200 focus-within:-translate-y-[1px]">
                   <Phone className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
@@ -270,7 +273,7 @@ export default function CheckoutPage() {
                     value={form.phone}
                     onChange={(e) => update("phone", e.target.value)}
                     placeholder="01XXXXXXXXX"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
                   />
                 </div>
 
@@ -281,11 +284,11 @@ export default function CheckoutPage() {
 
               {/* FULL ADDRESS */}
               <div>
-                <label className="mb-2 block text-sm font-extrabold text-slate-700">
+                <label className="mb-2 block text-[15px] font-extrabold text-slate-700">
                   সম্পূর্ণ ঠিকানা <span className="text-red-500">*</span>
                 </label>
 
-                <div className="relative">
+                <div className="relative transition-transform duration-200 focus-within:-translate-y-[1px]">
                   <MapPin className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-400" />
 
                   <textarea
@@ -293,7 +296,7 @@ export default function CheckoutPage() {
                     onChange={(e) => update("address", e.target.value)}
                     placeholder="জেলা / থানা / গ্রাম / বাড়ি / রোড লিখুন"
                     rows={4}
-                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-sm font-semibold leading-6 text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold leading-6 text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
                   />
                 </div>
 
@@ -312,10 +315,10 @@ export default function CheckoutPage() {
                 <div className="space-y-3">
 
                   <label
-                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all duration-200 active:scale-[0.99] ${
                       form.deliveryArea === "ঢাকার ভিতরে"
                         ? "border-violet-500 bg-violet-100 shadow-sm"
-                        : "border-slate-200 bg-white hover:border-violet-300"
+                        : "border-slate-200 bg-white hover:border-violet-300 hover:shadow-sm"
                     }`}
                   >
                     <input
@@ -327,20 +330,20 @@ export default function CheckoutPage() {
                       className="h-5 w-5 shrink-0 accent-violet-600"
                     />
 
-                    <span className="flex-1 text-sm font-extrabold text-slate-800">
+                    <span className="flex-1 text-[15px] font-extrabold text-slate-800">
                       ঢাকার ভিতরে
                     </span>
 
-                    <span className="shrink-0 text-sm font-black text-violet-600">
+                    <span className="shrink-0 text-[15px] font-black text-violet-600">
                       ৮০ টাকা
                     </span>
                   </label>
 
                   <label
-                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all duration-200 active:scale-[0.99] ${
                       form.deliveryArea === "ঢাকার বাহিরে"
                         ? "border-violet-500 bg-violet-100 shadow-sm"
-                        : "border-slate-200 bg-white hover:border-violet-300"
+                        : "border-slate-200 bg-white hover:border-violet-300 hover:shadow-sm"
                     }`}
                   >
                     <input
@@ -352,11 +355,11 @@ export default function CheckoutPage() {
                       className="h-5 w-5 shrink-0 accent-violet-600"
                     />
 
-                    <span className="flex-1 text-sm font-extrabold text-slate-800">
+                    <span className="flex-1 text-[15px] font-extrabold text-slate-800">
                       ঢাকার বাহিরে
                     </span>
 
-                    <span className="shrink-0 text-sm font-black text-violet-600">
+                    <span className="shrink-0 text-[15px] font-black text-violet-600">
                       ১২০ টাকা
                     </span>
                   </label>
@@ -366,7 +369,7 @@ export default function CheckoutPage() {
 
               {/* ORDER NOTE */}
               <div>
-                <label className="mb-2 block text-sm font-extrabold text-slate-700">
+                <label className="mb-2 block text-[15px] font-extrabold text-slate-700">
                   অতিরিক্ত নির্দেশনা
                   <span className="ml-1 font-medium text-slate-400">
                     (ঐচ্ছিক)
@@ -378,7 +381,7 @@ export default function CheckoutPage() {
                   onChange={(e) => update("note", e.target.value)}
                   placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন..."
                   rows={3}
-                  className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                  className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-[15px] font-semibold text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
                 />
               </div>
 
@@ -386,12 +389,12 @@ export default function CheckoutPage() {
           </div>
 
           {/* ORDER SUMMARY */}
-          <div className="mb-6 overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm">
+          <div className="mb-6 overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md">
 
             <div className="border-b border-amber-100 bg-amber-50 px-5 py-4 sm:px-6">
               <div className="flex items-center gap-3">
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 transition-transform duration-200 hover:scale-105">
                   <ClipboardList className="h-5 w-5" />
                 </div>
 
@@ -415,7 +418,7 @@ export default function CheckoutPage() {
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-3 rounded-2xl bg-slate-50 p-3"
+                    className="flex items-center gap-3 rounded-2xl bg-slate-50 p-3 transition-all duration-200 hover:-translate-y-[1px] hover:shadow-sm"
                   >
                     <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-white">
 
@@ -423,7 +426,7 @@ export default function CheckoutPage() {
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-slate-300">
@@ -434,7 +437,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <p className="break-words text-sm font-extrabold leading-5 text-slate-800">
+                      <p className="break-words text-[15px] font-extrabold leading-5 text-slate-800">
                         {item.name}
                       </p>
 
@@ -453,7 +456,7 @@ export default function CheckoutPage() {
 
               <div className="mt-5 space-y-3 border-t border-slate-100 pt-5">
 
-                <div className="flex items-center justify-between gap-4 text-sm">
+                <div className="flex items-center justify-between gap-4 text-[15px]">
                   <span className="font-semibold text-slate-500">
                     পণ্যের মূল্য
                   </span>
@@ -463,7 +466,7 @@ export default function CheckoutPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between gap-4 text-sm">
+                <div className="flex items-center justify-between gap-4 text-[15px]">
                   <span className="font-semibold text-slate-500">
                     ডেলিভারি চার্জ
                   </span>
@@ -476,7 +479,7 @@ export default function CheckoutPage() {
                 </div>
 
                 {codCharge > 0 && (
-                  <div className="flex items-center justify-between gap-4 text-sm">
+                  <div className="flex items-center justify-between gap-4 text-[15px]">
                     <span className="font-semibold text-slate-500">
                       COD চার্জ
                     </span>
@@ -487,7 +490,7 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between gap-4 rounded-2xl bg-emerald-50 px-4 py-4">
+                <div className="flex items-center justify-between gap-4 rounded-2xl bg-emerald-50 px-4 py-4 transition-transform duration-200 hover:scale-[1.01]">
                   <span className="text-base font-extrabold text-slate-800">
                     সর্বমোট
                   </span>
@@ -499,12 +502,12 @@ export default function CheckoutPage() {
 
               </div>
 
-              <div className="mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 p-4">
+              <div className="mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 p-4 transition-transform duration-200 hover:-translate-y-[1px]">
 
                 <Banknote className="mt-0.5 h-5 w-5 shrink-0 text-sky-600" />
 
                 <div>
-                  <p className="text-sm font-extrabold text-sky-800">
+                  <p className="text-[15px] font-extrabold text-sky-800">
                     ক্যাশ অন ডেলিভারি
                   </p>
 
@@ -529,7 +532,7 @@ export default function CheckoutPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-4 text-base font-extrabold text-white shadow-lg shadow-emerald-100 transition hover:from-emerald-600 hover:to-teal-600 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-5 py-4 text-base font-extrabold text-white shadow-lg shadow-emerald-100 transition-all duration-200 hover:-translate-y-[1px] hover:from-emerald-600 hover:to-teal-600 hover:shadow-xl active:translate-y-0 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? (
               <>
