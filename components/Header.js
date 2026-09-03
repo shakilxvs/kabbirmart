@@ -24,50 +24,56 @@ export default function Header() {
   if (pathname?.startsWith("/admin")) return null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-bone/90 backdrop-blur">
-      <div className="container-page flex h-16 items-center justify-between sm:h-20">
-        <button
-          className="-ml-2 rounded-full p-2 sm:hidden"
-          aria-label="Open menu"
-          onClick={() => setOpen(true)}
-        >
-          <Menu size={22} strokeWidth={1.75} />
-        </button>
+    <>
+      <header className="sticky top-0 z-40 border-b border-line/70 bg-bone/90 backdrop-blur">
+        <div className="container-page flex h-16 items-center justify-between sm:h-20">
+          <button
+            className="-ml-2 rounded-full p-2 sm:hidden"
+            aria-label="Open menu"
+            onClick={() => setOpen(true)}
+          >
+            <Menu size={22} strokeWidth={1.75} />
+          </button>
 
-        <Link
-          href="/"
-          className="font-display text-[22px] font-medium tracking-tight text-ink sm:text-[26px]"
-        >
-          KabbirMart
-        </Link>
+          <Link
+            href="/"
+            className="font-display text-[22px] font-medium tracking-tight text-ink sm:text-[26px]"
+          >
+            KabbirMart
+          </Link>
 
-        <nav className="hidden items-center gap-8 sm:flex">
-          {categories.slice(0, 5).map((c) => (
-            <Link
-              key={c.id}
-              href={`/category/${c.slug}`}
-              className="text-[14px] text-ink-soft transition-colors hover:text-ink"
-            >
-              {c.label}
-            </Link>
-          ))}
-        </nav>
+          <nav className="hidden items-center gap-8 sm:flex">
+            {categories.slice(0, 5).map((c) => (
+              <Link
+                key={c.id}
+                href={`/category/${c.slug}`}
+                className="text-[14px] text-ink-soft transition-colors hover:text-ink"
+              >
+                {c.label}
+              </Link>
+            ))}
+          </nav>
 
-        <Link
-          href="/cart"
-          aria-label="View cart"
-          className="relative -mr-2 rounded-full p-2"
-        >
-          <ShoppingBag size={22} strokeWidth={1.75} />
-          {ready && itemCount > 0 && (
-            <span className="absolute right-0 top-0 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-moss px-1 text-[10px] font-semibold leading-none text-white">
-              {itemCount}
-            </span>
-          )}
-        </Link>
-      </div>
+          <Link
+            href="/cart"
+            aria-label="View cart"
+            className="relative -mr-2 rounded-full p-2"
+          >
+            <ShoppingBag size={22} strokeWidth={1.75} />
+            {ready && itemCount > 0 && (
+              <span className="absolute right-0 top-0 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-moss px-1 text-[10px] font-semibold leading-none text-white">
+                {itemCount}
+              </span>
+            )}
+          </Link>
+        </div>
+      </header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — rendered as a sibling of <header>, NOT inside it.
+          Any ancestor with backdrop-blur/filter/transform creates a new
+          containing block in Safari, which breaks `position: fixed`
+          children by sizing them to that ancestor instead of the
+          viewport. Keeping this outside <header> avoids that entirely. */}
       {open && (
         <div className="fixed inset-0 z-[100] sm:hidden">
           <button
@@ -76,7 +82,7 @@ export default function Header() {
             onClick={() => setOpen(false)}
           />
           <div
-            className="absolute inset-y-0 left-0 flex w-[78%] max-w-xs flex-col bg-bone p-6 shadow-2xl"
+            className="absolute inset-y-0 left-0 flex w-[78%] max-w-xs flex-col p-6 shadow-2xl"
             style={{ backgroundColor: "#FAFAF7" }}
           >
             <div className="mb-8 flex items-center justify-between">
@@ -102,6 +108,6 @@ export default function Header() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
