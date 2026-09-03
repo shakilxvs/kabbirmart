@@ -24,10 +24,9 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    address: "",
     district: "",
     upazila: "",
-    area: "",
+    address: "",
     note: "",
   });
 
@@ -44,7 +43,7 @@ export default function CheckoutPage() {
     }
   }, [ready, items.length, submitting, router]);
 
-  // ঢাকা = ৮০ টাকা
+  // ঢাকা জেলা = ৮০ টাকা
   // ঢাকা ছাড়া সব জেলা = ১২০ টাকা
   const deliveryCharge = useMemo(() => {
     return form.district === "ঢাকা" ? 80 : 120;
@@ -68,9 +67,9 @@ export default function CheckoutPage() {
     if (
       !form.name.trim() ||
       !form.phone.trim() ||
-      !form.address.trim() ||
       !form.district ||
-      !form.upazila
+      !form.upazila ||
+      !form.address.trim()
     ) {
       setError("⚠️ দয়া করে প্রয়োজনীয় সব তথ্য পূরণ করুন।");
       return;
@@ -97,7 +96,7 @@ export default function CheckoutPage() {
           ...form,
           division: "",
           district: form.district,
-          area: `${form.upazila}${form.area ? `, ${form.area}` : ""}`,
+          area: form.upazila,
         },
 
         subtotal,
@@ -247,25 +246,6 @@ export default function CheckoutPage() {
 
             </div>
 
-            {/* Address */}
-            <div className="mb-5">
-
-              <label className="label-field" htmlFor="address">
-                সম্পূর্ণ ঠিকানা *
-              </label>
-
-              <textarea
-                id="address"
-                className="input-field min-h-[95px] resize-none"
-                value={form.address}
-                onChange={(e) => update("address", e.target.value)}
-                placeholder="বাসা/বাড়ি, রোড, গ্রাম/মহল্লা ইত্যাদি লিখুন"
-                autoComplete="street-address"
-                required
-              />
-
-            </div>
-
             {/* District */}
             <div className="mb-5">
 
@@ -295,7 +275,7 @@ export default function CheckoutPage() {
 
             </div>
 
-            {/* Upazila */}
+            {/* Upazila / Thana */}
             <div className="mb-5">
 
               <label className="label-field" htmlFor="upazila">
@@ -327,20 +307,26 @@ export default function CheckoutPage() {
 
             </div>
 
-            {/* Area */}
+            {/* Full Address */}
             <div className="mb-5">
 
-              <label className="label-field" htmlFor="area">
-                এলাকা / ইউনিয়ন / ওয়ার্ড
+              <label className="label-field" htmlFor="address">
+                সম্পূর্ণ ঠিকানা *
               </label>
 
-              <input
-                id="area"
-                className="input-field"
-                value={form.area}
-                onChange={(e) => update("area", e.target.value)}
-                placeholder="আপনার এলাকা, ইউনিয়ন বা ওয়ার্ড"
+              <textarea
+                id="address"
+                className="input-field min-h-[110px] resize-none"
+                value={form.address}
+                onChange={(e) => update("address", e.target.value)}
+                placeholder="বাসা/বাড়ি, রোড, গ্রাম/মহল্লা, ইউনিয়ন, ওয়ার্ড ইত্যাদিসহ সম্পূর্ণ ঠিকানা লিখুন"
+                autoComplete="street-address"
+                required
               />
+
+              <p className="mt-1.5 text-[11px] text-ink-soft">
+                📍 বিস্তারিত ঠিকানা দিলে দ্রুত ও সঠিকভাবে ডেলিভারি দেওয়া সম্ভব হবে।
+              </p>
 
             </div>
 
@@ -426,11 +412,13 @@ export default function CheckoutPage() {
             <div className="space-y-2 border-t border-line px-5 py-4 text-[12px]">
 
               <div className="flex justify-between text-ink-soft">
+
                 <span>পণ্যের মূল্য</span>
 
                 <span className="text-ink">
                   {formatBDT(subtotal)}
                 </span>
+
               </div>
 
               <div className="flex justify-between text-ink-soft">
@@ -518,7 +506,7 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          {/* Confirm Order */}
+          {/* Confirm Order Button */}
           <button
             type="submit"
             className="btn-primary mt-5 w-full py-4 text-[14px] font-semibold"
