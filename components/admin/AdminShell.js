@@ -10,12 +10,14 @@ import {
   Settings,
   Image as ImageIcon,
   LogOut,
+  Tag,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutGrid },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/categories", label: "Categories", icon: Tag },
   { href: "/admin/orders", label: "Orders", icon: ClipboardList },
   { href: "/admin/homepage", label: "Homepage", icon: ImageIcon },
   { href: "/admin/settings", label: "Settings", icon: Settings },
@@ -95,11 +97,11 @@ export default function AdminShell({ title, children }) {
           <Link
             key={href}
             href={href}
-            className={`flex flex-1 flex-col items-center gap-1 py-2.5 text-[10.5px] ${
+            className={`flex flex-1 flex-col items-center gap-1 px-1 py-2.5 text-[9.5px] leading-tight ${
               isActive(href) ? "text-moss" : "text-ink-soft"
             }`}
           >
-            <Icon size={19} strokeWidth={1.75} />
+            <Icon size={18} strokeWidth={1.75} />
             {label}
           </Link>
         ))}
