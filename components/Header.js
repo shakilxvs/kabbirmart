@@ -5,14 +5,21 @@ import { usePathname } from "next/navigation";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useCart } from "@/lib/cart-context";
-import { CATEGORIES } from "@/lib/data";
+import { getAllCategories } from "@/lib/categories";
 
 export default function Header() {
   const { itemCount, ready } = useCart();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    getAllCategories()
+      .then(setCategories)
+      .catch(() => setCategories([]));
+  }, []);
 
   if (pathname?.startsWith("/admin")) return null;
 
@@ -35,10 +42,10 @@ export default function Header() {
         </Link>
 
         <nav className="hidden items-center gap-8 sm:flex">
-          {CATEGORIES.slice(0, 5).map((c) => (
+          {categories.slice(0, 5).map((c) => (
             <Link
               key={c.id}
-              href={`/category/${c.id}`}
+              href={`/category/${c.slug}`}
               className="text-[14px] text-ink-soft transition-colors hover:text-ink"
             >
               {c.label}
@@ -62,26 +69,30 @@ export default function Header() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="fixed inset-0 z-50 sm:hidden">
-          <div
-            className="absolute inset-0 bg-ink/30"
+        <div className="fixed inset-0 z-[100] sm:hidden">
+          <button
+            aria-label="Close menu"
+            className="absolute inset-0 bg-ink/40"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute left-0 top-0 h-full w-[78%] max-w-xs animate-slide-in bg-bone p-6 [animation-duration:200ms] [transform:translateX(0)]">
+          <div
+            className="absolute inset-y-0 left-0 flex w-[78%] max-w-xs flex-col bg-bone p-6 shadow-2xl"
+            style={{ backgroundColor: "#FAFAF7" }}
+          >
             <div className="mb-8 flex items-center justify-between">
-              <span className="font-display text-xl font-medium">Menu</span>
-              <button aria-label="Close menu" onClick={() => setOpen(false)} className="p-1">
+              <span className="font-display text-xl font-medium text-ink">Menu</span>
+              <button aria-label="Close menu" onClick={() => setOpen(false)} className="p-1 text-ink">
                 <X size={22} strokeWidth={1.75} />
               </button>
             </div>
-            <nav className="flex flex-col gap-1">
+            <nav className="flex flex-col gap-1 overflow-y-auto">
               <Link href="/" className="rounded-lg px-2 py-3 text-[15px] text-ink">
                 Home
               </Link>
-              {CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <Link
                   key={c.id}
-                  href={`/category/${c.id}`}
+                  href={`/category/${c.slug}`}
                   className="rounded-lg px-2 py-3 text-[15px] text-ink"
                 >
                   {c.label}
