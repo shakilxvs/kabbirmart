@@ -47,24 +47,23 @@ export default function CheckoutPage() {
     }
   }, [ready, items.length, submitting, router]);
 
-  const deliveryCharge =
-    form.deliveryArea === "ঢাকার ভিতরে"
-      ? 80
-      : form.deliveryArea === "ঢাকার বাহিরে"
-      ? 120
-      : 0;
+  const deliveryCharge = useMemo(() => {
+    if (form.deliveryArea === "ঢাকার ভিতরে") return 80;
+    if (form.deliveryArea === "ঢাকার বাহিরে") return 120;
+    return 0;
+  }, [form.deliveryArea]);
 
   const codCharge = settings.codCharge || 0;
   const total = subtotal + deliveryCharge + codCharge;
 
-  function update(field: keyof typeof form, value: string) {
+  function update(field, value) {
     setForm((current) => ({
       ...current,
       [field]: value,
     }));
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setError("");
 
@@ -118,7 +117,8 @@ export default function CheckoutPage() {
       clearCart();
       router.push(`/order/${order.id}`);
     } catch (err) {
-      setError("❌ অর্ডার সম্পন্ন করা যায়নি। আবার চেষ্টা করুন।");
+      console.error(err);
+      setError("❌ অর্ডার সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।");
       setSubmitting(false);
     }
   }
@@ -142,14 +142,13 @@ export default function CheckoutPage() {
             আপনার অর্ডারটি সম্পন্ন করুন
           </h1>
 
-          <p className="mt-2 text-sm font-medium text-slate-500">
+          <p className="mt-2 text-sm font-medium text-slate-500 sm:text-base">
             নিচের তথ্যগুলো সঠিকভাবে পূরণ করুন
           </p>
         </div>
 
         {/* TRUST BOXES */}
         <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-
           <div className="rounded-2xl border border-violet-100 bg-violet-50 p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
@@ -197,7 +196,6 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -238,7 +236,7 @@ export default function CheckoutPage() {
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
                     placeholder="আপনার পূর্ণ নাম লিখুন"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
                 </div>
               </div>
@@ -257,8 +255,8 @@ export default function CheckoutPage() {
                     inputMode="numeric"
                     value={form.phone}
                     onChange={(e) => update("phone", e.target.value)}
-                    placeholder="০১XXXXXXXXX"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    placeholder="01XXXXXXXXX"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
                 </div>
 
@@ -267,7 +265,7 @@ export default function CheckoutPage() {
                 </p>
               </div>
 
-              {/* ADDRESS */}
+              {/* FULL ADDRESS */}
               <div>
                 <label className="mb-2 block text-sm font-extrabold text-slate-700">
                   সম্পূর্ণ ঠিকানা <span className="text-red-500">*</span>
@@ -281,7 +279,7 @@ export default function CheckoutPage() {
                     onChange={(e) => update("address", e.target.value)}
                     placeholder="জেলা / থানা / গ্রাম / বাড়ি / রোড লিখুন"
                     rows={4}
-                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold leading-6 text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-sm font-semibold leading-6 text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
                 </div>
 
@@ -292,20 +290,17 @@ export default function CheckoutPage() {
 
               {/* DELIVERY AREA */}
               <div className="rounded-2xl border border-violet-100 bg-violet-50/50 p-4 sm:p-5">
-
                 <label className="mb-3 block text-base font-extrabold text-slate-800">
-                  ডেলিভারি এলাকা{" "}
-                  <span className="text-red-500">*</span>
+                  ডেলিভারি এলাকা <span className="text-red-500">*</span>
                 </label>
 
                 <div className="space-y-3">
 
-                  {/* DHAKA */}
                   <label
-                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 bg-white p-4 transition-all ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all ${
                       form.deliveryArea === "ঢাকার ভিতরে"
-                        ? "border-violet-500 bg-violet-50 shadow-sm"
-                        : "border-slate-200 hover:border-violet-300"
+                        ? "border-violet-500 bg-violet-100 shadow-sm"
+                        : "border-slate-200 bg-white hover:border-violet-300"
                     }`}
                   >
                     <input
@@ -326,18 +321,13 @@ export default function CheckoutPage() {
                     <span className="text-sm font-black text-violet-600">
                       ৮০ টাকা
                     </span>
-
-                    {form.deliveryArea === "ঢাকার ভিতরে" && (
-                      <CheckCircle2 className="h-5 w-5 shrink-0 text-violet-600" />
-                    )}
                   </label>
 
-                  {/* OUTSIDE DHAKA */}
                   <label
-                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 bg-white p-4 transition-all ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all ${
                       form.deliveryArea === "ঢাকার বাহিরে"
-                        ? "border-violet-500 bg-violet-50 shadow-sm"
-                        : "border-slate-200 hover:border-violet-300"
+                        ? "border-violet-500 bg-violet-100 shadow-sm"
+                        : "border-slate-200 bg-white hover:border-violet-300"
                     }`}
                   >
                     <input
@@ -358,10 +348,6 @@ export default function CheckoutPage() {
                     <span className="text-sm font-black text-violet-600">
                       ১২০ টাকা
                     </span>
-
-                    {form.deliveryArea === "ঢাকার বাহিরে" && (
-                      <CheckCircle2 className="h-5 w-5 shrink-0 text-violet-600" />
-                    )}
                   </label>
 
                 </div>
@@ -401,7 +387,6 @@ export default function CheckoutPage() {
                   <h2 className="text-lg font-extrabold text-slate-900">
                     আপনার অর্ডার
                   </h2>
-
                   <p className="text-xs font-semibold text-slate-500">
                     অর্ডারের বিস্তারিত
                   </p>
@@ -454,7 +439,6 @@ export default function CheckoutPage() {
                   <span className="font-semibold text-slate-500">
                     পণ্যের মূল্য
                   </span>
-
                   <span className="font-extrabold text-slate-800">
                     {formatBDT(subtotal)}
                   </span>
@@ -464,7 +448,6 @@ export default function CheckoutPage() {
                   <span className="font-semibold text-slate-500">
                     ডেলিভারি চার্জ
                   </span>
-
                   <span className="font-extrabold text-slate-800">
                     {deliveryCharge > 0
                       ? formatBDT(deliveryCharge)
@@ -477,14 +460,13 @@ export default function CheckoutPage() {
                     <span className="font-semibold text-slate-500">
                       COD চার্জ
                     </span>
-
                     <span className="font-extrabold text-slate-800">
                       {formatBDT(codCharge)}
                     </span>
                   </div>
                 )}
 
-                <div className="mt-4 flex items-center justify-between rounded-2xl bg-emerald-50 px-4 py-4">
+                <div className="flex items-center justify-between rounded-2xl bg-emerald-50 px-4 py-4">
                   <span className="text-base font-extrabold text-slate-800">
                     সর্বমোট
                   </span>
@@ -520,7 +502,7 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          {/* BUTTON */}
+          {/* CONFIRM BUTTON */}
           <button
             type="submit"
             disabled={submitting}
