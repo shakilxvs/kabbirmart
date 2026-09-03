@@ -47,11 +47,12 @@ export default function CheckoutPage() {
     }
   }, [ready, items.length, submitting, router]);
 
-  const deliveryCharge = useMemo(() => {
-    if (form.deliveryArea === "ঢাকার ভিতরে") return 80;
-    if (form.deliveryArea === "ঢাকার বাহিরে") return 120;
-    return 0;
-  }, [form.deliveryArea]);
+  const deliveryCharge =
+    form.deliveryArea === "ঢাকার ভিতরে"
+      ? 80
+      : form.deliveryArea === "ঢাকার বাহিরে"
+      ? 120
+      : 0;
 
   const codCharge = settings.codCharge || 0;
   const total = subtotal + deliveryCharge + codCharge;
@@ -103,7 +104,6 @@ export default function CheckoutPage() {
           deliveryArea: form.deliveryArea,
           note: form.note,
 
-          // Existing order structure compatibility
           division: "",
           district: "",
           area: form.address,
@@ -118,9 +118,7 @@ export default function CheckoutPage() {
       clearCart();
       router.push(`/order/${order.id}`);
     } catch (err) {
-      setError(
-        "❌ অর্ডার সম্পন্ন করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।"
-      );
+      setError("❌ অর্ডার সম্পন্ন করা যায়নি। আবার চেষ্টা করুন।");
       setSubmitting(false);
     }
   }
@@ -133,7 +131,7 @@ export default function CheckoutPage() {
     <div className="container-page py-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
 
-        {/* Header */}
+        {/* HEADER */}
         <div className="mb-6 text-center sm:mb-8">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700">
             <CheckCircle2 className="h-4 w-4" />
@@ -144,20 +142,19 @@ export default function CheckoutPage() {
             আপনার অর্ডারটি সম্পন্ন করুন
           </h1>
 
-          <p className="mt-2 text-sm font-medium text-slate-500 sm:text-base">
+          <p className="mt-2 text-sm font-medium text-slate-500">
             নিচের তথ্যগুলো সঠিকভাবে পূরণ করুন
           </p>
         </div>
 
-        {/* Trust Cards */}
+        {/* TRUST BOXES */}
         <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          
+
           <div className="rounded-2xl border border-violet-100 bg-violet-50 p-4">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600">
                 <Truck className="h-5 w-5" />
               </div>
-
               <div>
                 <p className="text-sm font-extrabold text-slate-800">
                   সারা বাংলাদেশে
@@ -174,7 +171,6 @@ export default function CheckoutPage() {
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-600">
                 <Banknote className="h-5 w-5" />
               </div>
-
               <div>
                 <p className="text-sm font-extrabold text-slate-800">
                   ক্যাশ অন ডেলিভারি
@@ -191,7 +187,6 @@ export default function CheckoutPage() {
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600">
                 <ShieldCheck className="h-5 w-5" />
               </div>
-
               <div>
                 <p className="text-sm font-extrabold text-slate-800">
                   নিরাপদ অর্ডার
@@ -202,11 +197,12 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
+
         </div>
 
         <form onSubmit={handleSubmit}>
 
-          {/* Delivery Information */}
+          {/* DELIVERY INFORMATION */}
           <div className="mb-6 overflow-hidden rounded-3xl border border-violet-100 bg-white shadow-sm">
 
             <div className="border-b border-violet-100 bg-violet-50 px-5 py-4 sm:px-6">
@@ -228,33 +224,33 @@ export default function CheckoutPage() {
 
             <div className="space-y-5 p-5 sm:p-6">
 
-              {/* Name */}
+              {/* NAME */}
               <div>
                 <label className="mb-2 block text-sm font-extrabold text-slate-700">
                   আপনার নাম <span className="text-red-500">*</span>
                 </label>
 
                 <div className="relative">
-                  <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <User className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
                     type="text"
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
                     placeholder="আপনার পূর্ণ নাম লিখুন"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
                 </div>
               </div>
 
-              {/* Phone */}
+              {/* PHONE */}
               <div>
                 <label className="mb-2 block text-sm font-extrabold text-slate-700">
                   মোবাইল নম্বর <span className="text-red-500">*</span>
                 </label>
 
                 <div className="relative">
-                  <Phone className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                  <Phone className="pointer-events-none absolute left-4 top-1/2 z-10 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
                     type="tel"
@@ -262,52 +258,54 @@ export default function CheckoutPage() {
                     value={form.phone}
                     onChange={(e) => update("phone", e.target.value)}
                     placeholder="০১XXXXXXXXX"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold tracking-wide text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
                 </div>
 
-                <p className="mt-1.5 pl-1 text-xs font-medium text-slate-400">
+                <p className="mt-1.5 text-xs font-medium text-slate-400">
                   📱 যে নম্বরে আমাদের ডেলিভারি প্রতিনিধি যোগাযোগ করবেন
                 </p>
               </div>
 
-              {/* Full Address */}
+              {/* ADDRESS */}
               <div>
                 <label className="mb-2 block text-sm font-extrabold text-slate-700">
                   সম্পূর্ণ ঠিকানা <span className="text-red-500">*</span>
                 </label>
 
                 <div className="relative">
-                  <MapPin className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-400" />
+                  <MapPin className="pointer-events-none absolute left-4 top-4 z-10 h-5 w-5 text-slate-400" />
 
                   <textarea
                     value={form.address}
                     onChange={(e) => update("address", e.target.value)}
                     placeholder="জেলা / থানা / গ্রাম / বাড়ি / রোড লিখুন"
                     rows={4}
-                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold leading-6 text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-12 pr-4 text-sm font-semibold leading-6 text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                   />
                 </div>
 
-                <p className="mt-1.5 pl-1 text-xs font-medium text-slate-400">
+                <p className="mt-1.5 text-xs font-medium text-slate-400">
                   📍 যত বিস্তারিত ঠিকানা দেবেন, তত সহজে আপনার পণ্য পৌঁছে দেওয়া সম্ভব হবে।
                 </p>
               </div>
 
-              {/* Delivery Area - Radio Cards */}
-              <div>
-                <label className="mb-3 block text-sm font-extrabold text-slate-700">
-                  ডেলিভারি এলাকা <span className="text-red-500">*</span>
+              {/* DELIVERY AREA */}
+              <div className="rounded-2xl border border-violet-100 bg-violet-50/50 p-4 sm:p-5">
+
+                <label className="mb-3 block text-base font-extrabold text-slate-800">
+                  ডেলিভারি এলাকা{" "}
+                  <span className="text-red-500">*</span>
                 </label>
 
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="space-y-3">
 
-                  {/* Inside Dhaka */}
+                  {/* DHAKA */}
                   <label
-                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 bg-white p-4 transition-all ${
                       form.deliveryArea === "ঢাকার ভিতরে"
                         ? "border-violet-500 bg-violet-50 shadow-sm"
-                        : "border-slate-200 bg-slate-50 hover:border-violet-200 hover:bg-violet-50/50"
+                        : "border-slate-200 hover:border-violet-300"
                     }`}
                   >
                     <input
@@ -321,26 +319,25 @@ export default function CheckoutPage() {
                       className="h-5 w-5 shrink-0 accent-violet-600"
                     />
 
-                    <div className="flex-1">
-                      <p className="text-sm font-extrabold text-slate-800">
-                        ঢাকার ভিতরে
-                      </p>
-                      <p className="mt-0.5 text-sm font-bold text-violet-600">
-                        ৮০ টাকা
-                      </p>
-                    </div>
+                    <span className="flex-1 text-sm font-extrabold text-slate-800">
+                      ঢাকার ভিতরে
+                    </span>
+
+                    <span className="text-sm font-black text-violet-600">
+                      ৮০ টাকা
+                    </span>
 
                     {form.deliveryArea === "ঢাকার ভিতরে" && (
                       <CheckCircle2 className="h-5 w-5 shrink-0 text-violet-600" />
                     )}
                   </label>
 
-                  {/* Outside Dhaka */}
+                  {/* OUTSIDE DHAKA */}
                   <label
-                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 bg-white p-4 transition-all ${
                       form.deliveryArea === "ঢাকার বাহিরে"
                         ? "border-violet-500 bg-violet-50 shadow-sm"
-                        : "border-slate-200 bg-slate-50 hover:border-violet-200 hover:bg-violet-50/50"
+                        : "border-slate-200 hover:border-violet-300"
                     }`}
                   >
                     <input
@@ -354,14 +351,13 @@ export default function CheckoutPage() {
                       className="h-5 w-5 shrink-0 accent-violet-600"
                     />
 
-                    <div className="flex-1">
-                      <p className="text-sm font-extrabold text-slate-800">
-                        ঢাকার বাহিরে
-                      </p>
-                      <p className="mt-0.5 text-sm font-bold text-violet-600">
-                        ১২০ টাকা
-                      </p>
-                    </div>
+                    <span className="flex-1 text-sm font-extrabold text-slate-800">
+                      ঢাকার বাহিরে
+                    </span>
+
+                    <span className="text-sm font-black text-violet-600">
+                      ১২০ টাকা
+                    </span>
 
                     {form.deliveryArea === "ঢাকার বাহিরে" && (
                       <CheckCircle2 className="h-5 w-5 shrink-0 text-violet-600" />
@@ -371,7 +367,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Note */}
+              {/* NOTE */}
               <div>
                 <label className="mb-2 block text-sm font-extrabold text-slate-700">
                   অতিরিক্ত নির্দেশনা{" "}
@@ -385,14 +381,14 @@ export default function CheckoutPage() {
                   onChange={(e) => update("note", e.target.value)}
                   placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন..."
                   rows={3}
-                  className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-semibold text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
+                  className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-semibold text-slate-800 outline-none placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-100"
                 />
               </div>
 
             </div>
           </div>
 
-          {/* Order Summary */}
+          {/* ORDER SUMMARY */}
           <div className="mb-6 overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm">
 
             <div className="border-b border-amber-100 bg-amber-50 px-5 py-4 sm:px-6">
@@ -405,6 +401,7 @@ export default function CheckoutPage() {
                   <h2 className="text-lg font-extrabold text-slate-900">
                     আপনার অর্ডার
                   </h2>
+
                   <p className="text-xs font-semibold text-slate-500">
                     অর্ডারের বিস্তারিত
                   </p>
@@ -414,7 +411,6 @@ export default function CheckoutPage() {
 
             <div className="p-5 sm:p-6">
 
-              {/* Products */}
               <div className="space-y-3">
                 {items.map((item) => (
                   <div
@@ -452,7 +448,6 @@ export default function CheckoutPage() {
                 ))}
               </div>
 
-              {/* Price Details */}
               <div className="mt-5 space-y-3 border-t border-slate-100 pt-5">
 
                 <div className="flex items-center justify-between text-sm">
@@ -501,7 +496,6 @@ export default function CheckoutPage() {
 
               </div>
 
-              {/* COD Notice */}
               <div className="mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 p-4">
                 <Banknote className="mt-0.5 h-5 w-5 shrink-0 text-sky-600" />
 
@@ -519,14 +513,14 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Error */}
+          {/* ERROR */}
           {error && (
             <div className="mb-5 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
               {error}
             </div>
           )}
 
-          {/* Confirm Button */}
+          {/* BUTTON */}
           <button
             type="submit"
             disabled={submitting}
