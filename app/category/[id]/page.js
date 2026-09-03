@@ -1,19 +1,21 @@
 import { notFound } from "next/navigation";
 import { getProductsByCategory } from "@/lib/products";
-import { CATEGORIES } from "@/lib/data";
+import { getAllCategories } from "@/lib/categories";
 import ProductGrid from "@/components/ProductGrid";
 import SectionHeading from "@/components/SectionHeading";
 
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
-  const category = CATEGORIES.find((c) => c.id === params.id);
+  const categories = await getAllCategories();
+  const category = categories.find((c) => c.slug === params.id);
   if (!category) return {};
   return { title: `${category.label} — KabbirMart` };
 }
 
 export default async function CategoryPage({ params }) {
-  const category = CATEGORIES.find((c) => c.id === params.id);
+  const categories = await getAllCategories();
+  const category = categories.find((c) => c.slug === params.id);
   if (!category) notFound();
 
   const products = await getProductsByCategory(params.id);
