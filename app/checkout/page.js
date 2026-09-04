@@ -41,6 +41,34 @@ export default function CheckoutPage() {
     getStoreSettings().then(setSettings).catch(() => {});
   }, []);
 
+  // Meta Pixel - InitiateCheckout
+  useEffect(() => {
+    if (
+      ready &&
+      items.length > 0 &&
+      typeof window !== "undefined" &&
+      window.fbq
+    ) {
+      window.fbq("track", "InitiateCheckout", {
+        content_ids: items.map((item) =>
+          String(item.id || item.slug || item.name)
+        ),
+        content_type: "product",
+        contents: items.map((item) => ({
+          id: String(item.id || item.slug || item.name),
+          quantity: item.qty,
+          item_price: item.price,
+        })),
+        num_items: items.reduce(
+          (totalQty, item) => totalQty + item.qty,
+          0
+        ),
+        value: subtotal,
+        currency: "BDT",
+      });
+    }
+  }, [ready, items, subtotal]);
+
   useEffect(() => {
     if (ready && items.length === 0 && !submitting) {
       router.replace("/cart");
@@ -102,7 +130,6 @@ export default function CheckoutPage() {
           address: form.address.trim(),
           deliveryArea: form.deliveryArea,
           note: form.note.trim(),
-
           division: "",
           district: "",
           area: form.address.trim(),
@@ -131,7 +158,6 @@ export default function CheckoutPage() {
     <div className="container-page py-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
 
-        {/* PAGE HEADER */}
         <div className="mb-6 text-center sm:mb-8">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-4 py-2 text-sm font-bold text-emerald-700 transition-transform duration-200 active:scale-95">
             <CheckCircle2 className="h-4 w-4 shrink-0" />
@@ -147,13 +173,11 @@ export default function CheckoutPage() {
           </p>
         </div>
 
-        {/* 3 BENEFIT BOXES */}
         <div className="mb-6 grid grid-cols-3 gap-2 sm:gap-4">
 
           <div className="min-w-0 rounded-xl border border-violet-100 bg-violet-50 p-2.5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] sm:rounded-2xl sm:p-4">
             <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
-
-              <div className="mb-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600 transition-transform duration-200 sm:mb-0 sm:mr-3 sm:h-11 sm:w-11">
+              <div className="mb-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-100 text-violet-600 sm:mb-0 sm:mr-3 sm:h-11 sm:w-11">
                 <Truck className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
               </div>
 
@@ -166,13 +190,11 @@ export default function CheckoutPage() {
                   হোম ডেলিভারি
                 </p>
               </div>
-
             </div>
           </div>
 
           <div className="min-w-0 rounded-xl border border-sky-100 bg-sky-50 p-2.5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] sm:rounded-2xl sm:p-4">
             <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
-
               <div className="mb-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-sky-100 text-sky-600 sm:mb-0 sm:mr-3 sm:h-11 sm:w-11">
                 <Banknote className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
               </div>
@@ -186,13 +208,11 @@ export default function CheckoutPage() {
                   পণ্য হাতে পেয়ে পেমেন্ট
                 </p>
               </div>
-
             </div>
           </div>
 
           <div className="min-w-0 rounded-xl border border-emerald-100 bg-emerald-50 p-2.5 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md active:scale-[0.98] sm:rounded-2xl sm:p-4">
             <div className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left">
-
               <div className="mb-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-600 sm:mb-0 sm:mr-3 sm:h-11 sm:w-11">
                 <ShieldCheck className="h-[18px] w-[18px] sm:h-5 sm:w-5" />
               </div>
@@ -206,7 +226,6 @@ export default function CheckoutPage() {
                   সহজ ও ঝামেলামুক্ত
                 </p>
               </div>
-
             </div>
           </div>
 
@@ -214,13 +233,10 @@ export default function CheckoutPage() {
 
         <form onSubmit={handleSubmit}>
 
-          {/* DELIVERY INFORMATION */}
-          <div className="mb-6 overflow-hidden rounded-3xl border border-violet-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md">
-
+          <div className="mb-6 overflow-hidden rounded-3xl border border-violet-100 bg-white shadow-sm">
             <div className="border-b border-violet-100 bg-violet-50 px-5 py-4 sm:px-6">
               <div className="flex items-center gap-3">
-
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-600 transition-transform duration-200 hover:scale-105">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
                   <MapPin className="h-5 w-5" />
                 </div>
 
@@ -233,38 +249,35 @@ export default function CheckoutPage() {
                     যেখানে পণ্যটি ডেলিভারি করতে হবে
                   </p>
                 </div>
-
               </div>
             </div>
 
             <div className="space-y-5 p-5 sm:p-6">
 
-              {/* NAME */}
               <div>
                 <label className="mb-2 block text-[15px] font-extrabold text-slate-700">
                   আপনার নাম <span className="text-red-500">*</span>
                 </label>
 
-                <div className="relative transition-transform duration-200 focus-within:-translate-y-[1px]">
-                  <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 transition-colors duration-200" />
+                <div className="relative">
+                  <User className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
                     type="text"
                     value={form.name}
                     onChange={(e) => update("name", e.target.value)}
                     placeholder="আপনার পূর্ণ নাম লিখুন"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
                   />
                 </div>
               </div>
 
-              {/* PHONE */}
               <div>
                 <label className="mb-2 block text-[15px] font-extrabold text-slate-700">
                   মোবাইল নম্বর <span className="text-red-500">*</span>
                 </label>
 
-                <div className="relative transition-transform duration-200 focus-within:-translate-y-[1px]">
+                <div className="relative">
                   <Phone className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
                   <input
@@ -273,7 +286,7 @@ export default function CheckoutPage() {
                     value={form.phone}
                     onChange={(e) => update("phone", e.target.value)}
                     placeholder="01XXXXXXXXX"
-                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
                   />
                 </div>
 
@@ -282,13 +295,12 @@ export default function CheckoutPage() {
                 </p>
               </div>
 
-              {/* FULL ADDRESS */}
               <div>
                 <label className="mb-2 block text-[15px] font-extrabold text-slate-700">
                   সম্পূর্ণ ঠিকানা <span className="text-red-500">*</span>
                 </label>
 
-                <div className="relative transition-transform duration-200 focus-within:-translate-y-[1px]">
+                <div className="relative">
                   <MapPin className="pointer-events-none absolute left-4 top-4 h-5 w-5 text-slate-400" />
 
                   <textarea
@@ -296,18 +308,12 @@ export default function CheckoutPage() {
                     onChange={(e) => update("address", e.target.value)}
                     placeholder="জেলা / থানা / গ্রাম / বাড়ি / রোড লিখুন"
                     rows={4}
-                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold leading-6 text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
+                    className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 py-3.5 pl-14 pr-4 text-[15px] font-semibold leading-6 text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
                   />
                 </div>
-
-                <p className="mt-1.5 text-xs font-medium text-slate-400">
-                  বিস্তারিত ঠিকানা দিলে দ্রুত ও সহজে ডেলিভারি করা সম্ভব হবে।
-                </p>
               </div>
 
-              {/* DELIVERY AREA */}
               <div className="rounded-2xl border border-violet-100 bg-violet-50/50 p-4 sm:p-5">
-
                 <label className="mb-3 block text-base font-extrabold text-slate-800">
                   ডেলিভারি এলাকা <span className="text-red-500">*</span>
                 </label>
@@ -315,10 +321,10 @@ export default function CheckoutPage() {
                 <div className="space-y-3">
 
                   <label
-                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all duration-200 active:scale-[0.99] ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all ${
                       form.deliveryArea === "ঢাকার ভিতরে"
                         ? "border-violet-500 bg-violet-100 shadow-sm"
-                        : "border-slate-200 bg-white hover:border-violet-300 hover:shadow-sm"
+                        : "border-slate-200 bg-white hover:border-violet-300"
                     }`}
                   >
                     <input
@@ -326,7 +332,9 @@ export default function CheckoutPage() {
                       name="deliveryArea"
                       value="ঢাকার ভিতরে"
                       checked={form.deliveryArea === "ঢাকার ভিতরে"}
-                      onChange={(e) => update("deliveryArea", e.target.value)}
+                      onChange={(e) =>
+                        update("deliveryArea", e.target.value)
+                      }
                       className="h-5 w-5 shrink-0 accent-violet-600"
                     />
 
@@ -340,10 +348,10 @@ export default function CheckoutPage() {
                   </label>
 
                   <label
-                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all duration-200 active:scale-[0.99] ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-2xl border-2 p-4 transition-all ${
                       form.deliveryArea === "ঢাকার বাহিরে"
                         ? "border-violet-500 bg-violet-100 shadow-sm"
-                        : "border-slate-200 bg-white hover:border-violet-300 hover:shadow-sm"
+                        : "border-slate-200 bg-white hover:border-violet-300"
                     }`}
                   >
                     <input
@@ -351,7 +359,9 @@ export default function CheckoutPage() {
                       name="deliveryArea"
                       value="ঢাকার বাহিরে"
                       checked={form.deliveryArea === "ঢাকার বাহিরে"}
-                      onChange={(e) => update("deliveryArea", e.target.value)}
+                      onChange={(e) =>
+                        update("deliveryArea", e.target.value)
+                      }
                       className="h-5 w-5 shrink-0 accent-violet-600"
                     />
 
@@ -367,7 +377,6 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* ORDER NOTE */}
               <div>
                 <label className="mb-2 block text-[15px] font-extrabold text-slate-700">
                   অতিরিক্ত নির্দেশনা
@@ -381,20 +390,17 @@ export default function CheckoutPage() {
                   onChange={(e) => update("note", e.target.value)}
                   placeholder="কোনো বিশেষ নির্দেশনা থাকলে লিখুন..."
                   rows={3}
-                  className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-[15px] font-semibold text-slate-800 outline-none transition-all duration-200 placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
+                  className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-[15px] font-semibold text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:shadow-[0_0_0_4px_rgba(139,92,246,0.10)]"
                 />
               </div>
 
             </div>
           </div>
 
-          {/* ORDER SUMMARY */}
-          <div className="mb-6 overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md">
-
+          <div className="mb-6 overflow-hidden rounded-3xl border border-amber-100 bg-white shadow-sm">
             <div className="border-b border-amber-100 bg-amber-50 px-5 py-4 sm:px-6">
               <div className="flex items-center gap-3">
-
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 transition-transform duration-200 hover:scale-105">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-amber-100 text-amber-600">
                   <ClipboardList className="h-5 w-5" />
                 </div>
 
@@ -407,33 +413,29 @@ export default function CheckoutPage() {
                     অর্ডারের বিস্তারিত
                   </p>
                 </div>
-
               </div>
             </div>
 
             <div className="p-5 sm:p-6">
-
               <div className="space-y-3">
 
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-3 rounded-2xl bg-slate-50 p-3 transition-all duration-200 hover:-translate-y-[1px] hover:shadow-sm"
+                    className="flex items-center gap-3 rounded-2xl bg-slate-50 p-3"
                   >
                     <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-white">
-
                       {item.image ? (
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                          className="h-full w-full object-cover"
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-slate-300">
                           <ShoppingBag className="h-6 w-6" />
                         </div>
                       )}
-
                     </div>
 
                     <div className="min-w-0 flex-1">
@@ -490,7 +492,7 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between gap-4 rounded-2xl bg-emerald-50 px-4 py-4 transition-transform duration-200 hover:scale-[1.01]">
+                <div className="flex items-center justify-between gap-4 rounded-2xl bg-emerald-50 px-4 py-4">
                   <span className="text-base font-extrabold text-slate-800">
                     সর্বমোট
                   </span>
@@ -502,8 +504,7 @@ export default function CheckoutPage() {
 
               </div>
 
-              <div className="mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 p-4 transition-transform duration-200 hover:-translate-y-[1px]">
-
+              <div className="mt-4 flex items-start gap-3 rounded-2xl bg-sky-50 p-4">
                 <Banknote className="mt-0.5 h-5 w-5 shrink-0 text-sky-600" />
 
                 <div>
@@ -515,20 +516,16 @@ export default function CheckoutPage() {
                     পণ্য হাতে পাওয়ার পর ডেলিভারি প্রতিনিধিকে পেমেন্ট করুন।
                   </p>
                 </div>
-
               </div>
-
             </div>
           </div>
 
-          {/* ERROR MESSAGE */}
           {error && (
             <div className="mb-5 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-bold text-red-600">
               {error}
             </div>
           )}
 
-          {/* CONFIRM ORDER BUTTON */}
           <button
             type="submit"
             disabled={submitting}
